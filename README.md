@@ -84,6 +84,7 @@ fc-05-emerging-threat-intelligence/
 │   ├── Wolfsberg_Publications.md
 │   ├── FinCEN_Advisories.md
 │   ├── FCA_Publications.md
+│   ├── RUSI_Publications.md
 │   └── Europol_Threat_Assessments.md
 │
 ├── analytics-opportunities/
