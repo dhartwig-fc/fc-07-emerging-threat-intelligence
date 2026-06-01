@@ -288,3 +288,4 @@ The strongest threat assessments emerge when multiple intelligence disciplines c
 - Strategic foresight
 
 This mapping framework enables a more structured and defensible approach to emerging threat prioritisation.
+This document becomes the bridge between your threat catalogue and your intelligence library, and later feeds directly into Threat_Prioritisation_Framework.md and Future_Scenarios.md.
