@@ -100,4 +100,185 @@ fc-05-emerging-threat-intelligence/
 │
 └── README.md
 ```
+## Intelligence Source Framework
 
+The Emerging Threat Intelligence Repository consolidates intelligence from multiple authoritative sources to support horizon scanning, threat assessment and future analytics development.
+
+Each source provides a different perspective on the evolving financial crime landscape.
+
+Together they create a layered intelligence model that supports both strategic planning and operational detection design.
+
+### Intelligence Ecosystem
+
+| Source | Primary Question Answered | Perspective |
+|----------|-------------------------|-------------|
+| FATF | What risks should the global financial system be concerned about? | Regulatory and Strategic |
+| Europol | What are organised crime groups doing today? | Law Enforcement Intelligence |
+| FinCEN | What are investigators and SAR reporters observing? | Operational Financial Intelligence |
+| Wolfsberg Group | How should financial institutions respond? | Industry Best Practice |
+| RUSI | What emerging risks and policy developments are coming next? | Strategic Research and Future Threat Analysis |
+
+---
+
+### FATF
+
+The Financial Action Task Force (FATF) establishes the international standards for Anti-Money Laundering, Counter-Terrorist Financing and Proliferation Financing.
+
+FATF publications identify:
+
+- Emerging global risks
+- Regulatory expectations
+- Strategic financial crime trends
+- Areas requiring enhanced controls
+
+FATF answers:
+
+> What should financial institutions be worried about?
+
+Repository contribution:
+
+- Strategic threat assessment
+- Emerging risk identification
+- Global financial crime trends
+- Regulatory direction of travel
+
+---
+
+### Europol
+
+Europol provides intelligence regarding serious organised crime and criminal networks operating across Europe and internationally.
+
+Europol publications identify:
+
+- Criminal methodologies
+- Organised crime trends
+- Network structures
+- Emerging criminal capabilities
+
+Europol answers:
+
+> What are criminals actually doing?
+
+Repository contribution:
+
+- Criminal threat intelligence
+- Organised crime assessments
+- Network intelligence opportunities
+- Emerging criminal methodologies
+
+---
+
+### FinCEN
+
+FinCEN provides operational intelligence based upon suspicious activity reporting, investigations and law enforcement partnerships.
+
+FinCEN publications frequently include:
+
+- Red flag indicators
+- Case studies
+- Financial typologies
+- Detection guidance
+
+FinCEN answers:
+
+> What are investigators seeing in the real world?
+
+Repository contribution:
+
+- Detection indicators
+- Financial crime typologies
+- SAR intelligence
+- Investigative insights
+
+---
+
+### Wolfsberg Group
+
+The Wolfsberg Group publishes industry guidance developed by leading global financial institutions.
+
+Publications focus on:
+
+- Trade Finance
+- Sanctions Compliance
+- Correspondent Banking
+- Risk Management
+- Customer Due Diligence
+
+Wolfsberg answers:
+
+> How should banks respond?
+
+Repository contribution:
+
+- Industry best practice
+- Control framework design
+- Risk governance
+- Monitoring effectiveness
+
+---
+
+### RUSI
+
+The Royal United Services Institute (RUSI) provides independent research on financial crime, sanctions, kleptocracy, illicit finance and national security threats.
+
+RUSI publications frequently identify:
+
+- Emerging geopolitical risks
+- Future financial crime threats
+- Sanctions developments
+- Policy and regulatory challenges
+- New criminal exploitation methods
+
+RUSI answers:
+
+> What threats are coming next?
+
+Repository contribution:
+
+- Horizon scanning
+- Future threat assessment
+- Strategic foresight
+- Emerging typology development
+
+---
+
+## Intelligence-to-Analytics Lifecycle
+
+The repository uses intelligence publications to drive the development of future analytics capabilities.
+
+```text
+FATF
+↓
+Strategic Risk Identification
+
+Europol
+↓
+Criminal Threat Intelligence
+
+FinCEN
+↓
+Operational Detection Indicators
+
+Wolfsberg
+↓
+Control Design and Governance
+
+RUSI
+↓
+Future Threat Forecasting
+
+↓
+Emerging Threat Intelligence Repository
+
+↓
+Network Analytics
+Risk Scoring
+AI Copilots
+Detection Models
+Investigator Tooling
+Future Analytics Development
+```
+
+This approach ensures that future analytical capabilities are grounded in authoritative intelligence sources rather than technology-driven assumptions.
+
+The objective is to maintain a continuously evolving view of financial crime risk and translate intelligence into practical detection and investigation capabilities.
