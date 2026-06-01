@@ -6,7 +6,7 @@ The repository consolidates intelligence from regulators, law enforcement agenci
 
 ---
 
-## Repository Objectives
+# Repository Objectives
 
 This repository aims to:
 
@@ -20,7 +20,7 @@ This repository aims to:
 
 ---
 
-## Capability Areas
+# Capability Areas
 
 | Capability | Description |
 |------------|-------------|
@@ -34,15 +34,17 @@ This repository aims to:
 
 ---
 
-## Intelligence Framework
+# Intelligence Framework
 
 The Emerging Threat Intelligence Repository consolidates intelligence from multiple authoritative sources to support horizon scanning, threat assessment and future analytics development.
 
 Each source provides a different perspective on the evolving financial crime landscape.
 
-Together they create a layered intelligence model that supports both strategic planning and operational detection design.
+Together they create a layered intelligence model supporting strategic planning, operational detection design and future analytical capability development.
 
-### Intelligence Ecosystem
+---
+
+# Intelligence Ecosystem
 
 | Source | Primary Question Answered | Perspective |
 |----------|-------------------------|-------------|
@@ -65,122 +67,122 @@ Together they create a layered intelligence model that supports both strategic p
 
 ---
 
-## Intelligence-to-Analytics Lifecycle
+# Intelligence-to-Analytics Lifecycle
 
 The repository uses intelligence publications to drive the development of future analytical capabilities.
 
-```text
-FATF
-↓
-What regulators worry about
+## Intelligence Sources
 
-Europol / NCA
-↓
-What criminals are doing
-
-FinCEN / Egmont
-↓
-What investigators are seeing
-
-Wolfsberg
-↓
-How banks should respond
-
-FCA
-↓
-What supervisors expect
-
-OFAC / OFSI
-↓
-How sanctions are being evaded
-
-Transparency International
-↓
-Where corruption risk exists
-
-RUSI / Geopolitical Monitor
-↓
-What is coming next
+| Intelligence Source | Intelligence Produced |
+|--------------------|----------------------|
+| FATF | Regulatory priorities |
+| Europol / NCA | Criminal methodologies |
+| FinCEN / Egmont | Operational indicators |
+| Wolfsberg Group | Industry response guidance |
+| FCA | Supervisory expectations |
+| OFAC / OFSI | Sanctions evasion intelligence |
+| Transparency International | Corruption vulnerabilities |
+| RUSI / Geopolitical Monitor | Future threat intelligence |
+| OECD | Governance and transparency intelligence |
+| BIS | Financial stability intelligence |
+| World Economic Forum | Strategic foresight |
+| United Nations | International security intelligence |
 
 ↓
 
-Emerging Threat Intelligence Repository
+## Emerging Threat Intelligence Repository
+
+The repository consolidates intelligence from multiple authoritative sources and transforms intelligence into actionable future capability development.
+
+### Repository Outputs
+
+| Repository Output | Purpose |
+|-------------------|---------|
+| Emerging Threat Catalogue | Identification and assessment of emerging financial crime threats |
+| Threat Prioritisation Framework | Ranking threats by likelihood, impact and relevance |
+| Emerging Threat Scorecards | Structured assessment of individual threats |
+| Future Scenarios | Horizon scanning and future threat modelling |
+| Analytics Opportunities | Identification of future analytical capabilities |
+| Threat-to-Control Mapping | Mapping threats to current controls and gaps |
+| Threat-to-Analytics Mapping | Mapping threats to future detection opportunities |
+| Threat-to-AI Mapping | Identification of AI-enabled use cases |
+| Threat-to-Source Mapping | Traceability between intelligence sources and threats |
 
 ↓
 
-Threat Intelligence
-↓
-Emerging Typologies
-↓
-Scenario Engineering
-↓
-Network Analytics
-↓
-Risk Scoring
-↓
-AI Copilots
-↓
-Future Detection Models
-```
+## Capability Development Areas
+
+| Capability Area | Example Outcomes |
+|-----------------|------------------|
+| Threat Intelligence | Intelligence collection and threat assessment |
+| Emerging Typologies | Identification of future criminal methodologies |
+| Scenario Engineering | Future threat modelling and horizon scanning |
+| Network Analytics | Relationship discovery and criminal network analysis |
+| Trade Analytics | Trade-based money laundering and sanctions analytics |
+| Behavioural Analytics | Mule detection, synthetic identities and anomaly detection |
+| Risk Scoring | Dynamic threat and customer risk assessment |
+| Regulatory Intelligence | Monitoring supervisory and regulatory developments |
+| Geopolitical Analysis | Assessment of geopolitical drivers of financial crime |
+| AI Copilots | Intelligence-assisted investigations |
+| Future Detection Models | Development of next-generation detection capabilities |
+
+### End-to-End Intelligence Model
+
+    FATF
+    Europol
+    FinCEN
+    Wolfsberg
+    FCA
+    OFAC
+    OFSI
+    Egmont
+    Transparency International
+    RUSI
+    Geopolitical Monitor
+    OECD
+    BIS
+    World Economic Forum
+    United Nations
+            ↓
+
+    Emerging Threat Intelligence Repository
+
+            ↓
+
+    Emerging Threat Catalogue
+    Threat Prioritisation
+    Threat Scorecards
+    Future Scenarios
+    Analytics Opportunities
+    Threat Mapping Frameworks
+
+            ↓
+
+    Network Analytics
+    Trade Analytics
+    Behavioural Analytics
+    Risk Scoring
+    AI Copilots
+    Future Detection Models
+
+### Intelligence Transformation Principle
+
+The objective of the repository is not simply to collect intelligence.
+
+The objective is to transform intelligence into future analytical and investigative capabilities.
+
+The repository therefore acts as a bridge between:
+
+**External Intelligence Sources → Threat Assessment → Prioritisation → Analytics Development → Future Detection Capability**
+
+This ensures that emerging financial crime risks are identified and translated into practical analytical solutions before they become mainstream threats.
 
 ---
 
-## Repository Structure
-
-```text
-fc-07-emerging-threat-intelligence/
-
-├── tier-1-core/
-│   ├── FATF_Threat_Reviews.md
-│   ├── Europol_Threat_Assessments.md
-│   ├── FinCEN_Advisories.md
-│   ├── Wolfsberg_Publications.md
-│   └── RUSI_Publications.md
-│
-├── tier-2-operational/
-│   ├── NCA_Publications.md
-│   ├── FCA_Publications.md
-│   ├── OFAC_Advisories.md
-│   ├── OFSI_Publications.md
-│   ├── Egmont_Group.md
-│   └── Transparency_International.md
-│
-├── tier-3-strategic/
-│   ├── Geopolitical_Monitor.md
-│   ├── OECD_Publications.md
-│   ├── BIS_Publications.md
-│   ├── World_Economic_Forum.md
-│   └── United_Nations_Report.md
-│
-├── emerging-threats/
-│   ├── ET001_AI_Generated_Trade_Documents.md
-│   ├── ET002_Synthetic_Identity_Networks.md
-│   ├── ET003_Stablecoin_Layering.md
-│   ├── ET004_Crypto_Trade_Finance_Laundering.md
-│   ├── ET005_Trade_Finance_Sanctions_Evasion.md
-│   ├── ET006_Open_Banking_Mule_Networks.md
-│   ├── ET007_Social_Media_Mule_Recruitment.md
-│   ├── ET008_Embedded_Finance_Abuse.md
-│   ├── ET009_Supply_Chain_Finance_Manipulation.md
-│   └── ET010_Deepfake_Identity_Fraud.md
-│
-├── future-analytics-opportunities/
-│   ├── Emerging_Analytics_Roadmap.md
-│   ├── Threat_To_Control_Mapping.md
-│   ├── Threat_To_AI_Mapping.md
-│   ├── Threat_Prioritisation_Framework.md
-│   └── Future_Scenarios.md
-│
-├── Intelligence_Framework.md
-└── README.md
-```
-
----
-
-## Emerging Threat Catalogue
+# Emerging Threat Catalogue
 
 | ID | Emerging Threat | Status |
-|----|----------------|--------|
+|----|-----------------|---------|
 | ET001 | AI Generated Trade Documents | Active |
 | ET002 | Synthetic Identity Networks | Active |
 | ET003 | Stablecoin Layering | Active |
@@ -194,49 +196,37 @@ fc-07-emerging-threat-intelligence/
 
 ---
 
-## Future Analytics Opportunities
+# Future Analytics Opportunities
 
-The repository identifies future analytical capabilities required to address emerging threats.
-
-### Network Analytics
-
-- Beneficial ownership resolution
-- Relationship discovery
-- Criminal network identification
-- Risk propagation analytics
-
-### Trade Analytics
-
-- Trade route monitoring
-- Commodity benchmarking
-- Trade document validation
-- Supply chain intelligence
-
-### Digital Asset Analytics
-
-- Stablecoin monitoring
-- Wallet attribution
-- Blockchain intelligence
-- Cross-chain tracing
-
-### Behavioural Analytics
-
-- Synthetic identity detection
-- Mule network detection
-- Behavioural anomaly detection
-- Digital identity risk scoring
-
-### AI-Enabled Analytics
-
-- Investigator copilots
-- Alert summarisation
-- Threat intelligence summarisation
-- Scenario generation
-- Automated SAR assistance
+| Analytics Domain | Example Capabilities |
+|-----------------|----------------------|
+| Network Analytics | Beneficial ownership resolution, relationship discovery, criminal network identification, risk propagation analytics |
+| Trade Analytics | Trade route monitoring, commodity benchmarking, trade document validation, supply chain intelligence |
+| Behavioural Analytics | Synthetic identity detection, mule network detection, behavioural anomaly detection, digital identity risk scoring |
+| AI Enabled Analytics | Investigator copilots, alert summarisation, threat intelligence summarisation, scenario generation, automated SAR assistance |
 
 ---
 
-## Related Repositories
+# Repository Structure
+
+    fc-07-emerging-threat-intelligence/
+    │
+    ├── intelligence/
+    │   ├── tier-1-core/
+    │   ├── tier-2-operational/
+    │   └── tier-3-strategic/
+    │
+    ├── threats/
+    │
+    ├── roadmap/
+    │
+    ├── analytics-opportunities/
+    │
+    └── README.md
+
+---
+
+# Related Repositories
 
 | Repository | Purpose |
 |------------|---------|
@@ -246,12 +236,10 @@ The repository identifies future analytical capabilities required to address eme
 
 ---
 
-## Repository Vision
+# Repository Vision
 
 Most financial crime programmes focus on known threats.
 
 This repository focuses on identifying what comes next.
 
-The objective is to create a structured intelligence framework that continuously transforms intelligence into future analytical capabilities.
-
-By combining regulatory intelligence, law enforcement reporting, financial intelligence, industry guidance and geopolitical analysis, the repository provides a forward-looking view of financial crime risk and future detection opportunities.
+The objective is to create a structured intelligence framework that continuously transforms intelligence into future analytical capabilities, ensuring organisations remain ahead of emerging financial crime risks rather than reacting after threats become established.
