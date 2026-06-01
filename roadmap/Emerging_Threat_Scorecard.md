@@ -276,7 +276,7 @@ Current analysis suggests that the most important future financial crime capabil
 
 The scorecard provides a repeatable framework for translating threat intelligence into strategic investment priorities.
 
-''' text
+```text
 
 Source_Matrix.md
 ↓
@@ -297,4 +297,4 @@ Current threat landscape
 Emerging_Threat_Scorecard.md
 ↓
 What we should prioritise
-'''
+```
