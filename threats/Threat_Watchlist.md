@@ -188,3 +188,5 @@ Future analytical investment should focus on threats where:
 - Detection capabilities remain limited
 
 The watchlist provides the operational mechanism for tracking these developments and prioritising future analytical responses.
+This is the document your Head of Financial Crime, MLRO or Strategy Lead would read first because it answers one simple question:
+“What should we be worried about next?”
