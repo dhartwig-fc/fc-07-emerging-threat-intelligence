@@ -100,185 +100,107 @@ fc-05-emerging-threat-intelligence/
 │
 └── README.md
 ```
-## Intelligence Source Framework
+## Intelligence Framework
 
-The Emerging Threat Intelligence Repository consolidates intelligence from multiple authoritative sources to support horizon scanning, threat assessment and future analytics development.
+The Emerging Threat Intelligence Library consolidates intelligence from regulatory bodies, law enforcement agencies, financial intelligence units, industry groups and strategic research organisations.
 
-Each source provides a different perspective on the evolving financial crime landscape.
-
-Together they create a layered intelligence model that supports both strategic planning and operational detection design.
-
-### Intelligence Ecosystem
-
-| Source | Primary Question Answered | Perspective |
-|----------|-------------------------|-------------|
-| FATF | What risks should the global financial system be concerned about? | Regulatory and Strategic |
-| Europol | What are organised crime groups doing today? | Law Enforcement Intelligence |
-| FinCEN | What are investigators and SAR reporters observing? | Operational Financial Intelligence |
-| Wolfsberg Group | How should financial institutions respond? | Industry Best Practice |
-| RUSI | What emerging risks and policy developments are coming next? | Strategic Research and Future Threat Analysis |
+Each source contributes a unique perspective on the evolving financial crime landscape and helps translate intelligence into future analytical capabilities.
 
 ---
 
-### FATF
+### Tier 1 – Core Intelligence Sources
 
-The Financial Action Task Force (FATF) establishes the international standards for Anti-Money Laundering, Counter-Terrorist Financing and Proliferation Financing.
+These sources form the foundation of the intelligence framework and are reviewed regularly.
 
-FATF publications identify:
-
-- Emerging global risks
-- Regulatory expectations
-- Strategic financial crime trends
-- Areas requiring enhanced controls
-
-FATF answers:
-
-> What should financial institutions be worried about?
-
-Repository contribution:
-
-- Strategic threat assessment
-- Emerging risk identification
-- Global financial crime trends
-- Regulatory direction of travel
+| Source | Primary Focus | Key Question Answered |
+|----------|----------|----------|
+| FATF | Global AML/CFT Standards | What risks should the global financial system be concerned about? |
+| Europol | Organised Crime Intelligence | What are criminal networks doing today? |
+| FinCEN | Financial Intelligence | What are investigators and SAR reporters seeing? |
+| Wolfsberg Group | Industry Best Practice | How should financial institutions respond? |
+| RUSI | Strategic Research | What threats are coming next? |
 
 ---
 
-### Europol
+### Tier 2 – Operational Intelligence Sources
 
-Europol provides intelligence regarding serious organised crime and criminal networks operating across Europe and internationally.
+These sources provide practical intelligence, supervisory insight and sanctions-focused risk information.
 
-Europol publications identify:
-
-- Criminal methodologies
-- Organised crime trends
-- Network structures
-- Emerging criminal capabilities
-
-Europol answers:
-
-> What are criminals actually doing?
-
-Repository contribution:
-
-- Criminal threat intelligence
-- Organised crime assessments
-- Network intelligence opportunities
-- Emerging criminal methodologies
+| Source | Primary Focus | Key Question Answered |
+|----------|----------|----------|
+| NCA | UK Organised Crime | What are UK criminal networks doing? |
+| FCA | Regulatory Expectations | What are regulators expecting firms to improve? |
+| OFAC | Sanctions Intelligence | How are sanctions being evaded? |
+| OFSI | UK Sanctions Intelligence | What sanctions risks are emerging? |
+| Egmont Group | FIU Intelligence | What are financial intelligence units observing globally? |
+| Transparency International | Corruption Risk | Where does corruption and kleptocracy risk exist? |
 
 ---
 
-### FinCEN
+### Tier 3 – Strategic and Geopolitical Intelligence Sources
 
-FinCEN provides operational intelligence based upon suspicious activity reporting, investigations and law enforcement partnerships.
+These sources support horizon scanning and geopolitical risk assessment.
 
-FinCEN publications frequently include:
-
-- Red flag indicators
-- Case studies
-- Financial typologies
-- Detection guidance
-
-FinCEN answers:
-
-> What are investigators seeing in the real world?
-
-Repository contribution:
-
-- Detection indicators
-- Financial crime typologies
-- SAR intelligence
-- Investigative insights
-
----
-
-### Wolfsberg Group
-
-The Wolfsberg Group publishes industry guidance developed by leading global financial institutions.
-
-Publications focus on:
-
-- Trade Finance
-- Sanctions Compliance
-- Correspondent Banking
-- Risk Management
-- Customer Due Diligence
-
-Wolfsberg answers:
-
-> How should banks respond?
-
-Repository contribution:
-
-- Industry best practice
-- Control framework design
-- Risk governance
-- Monitoring effectiveness
-
----
-
-### RUSI
-
-The Royal United Services Institute (RUSI) provides independent research on financial crime, sanctions, kleptocracy, illicit finance and national security threats.
-
-RUSI publications frequently identify:
-
-- Emerging geopolitical risks
-- Future financial crime threats
-- Sanctions developments
-- Policy and regulatory challenges
-- New criminal exploitation methods
-
-RUSI answers:
-
-> What threats are coming next?
-
-Repository contribution:
-
-- Horizon scanning
-- Future threat assessment
-- Strategic foresight
-- Emerging typology development
+| Source | Primary Focus | Key Question Answered |
+|----------|----------|----------|
+| Geopolitical Monitor | Geopolitical Risk | What geopolitical developments could drive future financial crime threats? |
+| OECD | Corporate Transparency | How are governance and transparency risks evolving? |
+| BIS | Financial Stability | What structural financial risks are emerging? |
+| World Economic Forum | Emerging Technology | What future technological risks may impact financial crime? |
+| United Nations | Sanctions and Security | What global security and sanctions developments are occurring? |
 
 ---
 
 ## Intelligence-to-Analytics Lifecycle
 
-The repository uses intelligence publications to drive the development of future analytics capabilities.
-
 ```text
 FATF
 ↓
-Strategic Risk Identification
+What regulators worry about
 
-Europol
+Europol / NCA
 ↓
-Criminal Threat Intelligence
+What criminals are doing
 
-FinCEN
+FinCEN / Egmont
 ↓
-Operational Detection Indicators
+What investigators are seeing
 
 Wolfsberg
 ↓
-Control Design and Governance
+How banks should respond
 
-RUSI
+FCA
 ↓
-Future Threat Forecasting
+What supervisors expect
+
+OFAC / OFSI
+↓
+How sanctions are being evaded
+
+Transparency International
+↓
+Where corruption risk exists
+
+RUSI / Geopolitical Monitor
+↓
+What is coming next
 
 ↓
 Emerging Threat Intelligence Repository
 
 ↓
+Threat Intelligence
+↓
+Scenario Engineering
+↓
 Network Analytics
+↓
 Risk Scoring
+↓
 AI Copilots
-Detection Models
-Investigator Tooling
-Future Analytics Development
+↓
+Future Detection Models
 ```
 
-This approach ensures that future analytical capabilities are grounded in authoritative intelligence sources rather than technology-driven assumptions.
-
-The objective is to maintain a continuously evolving view of financial crime risk and translate intelligence into practical detection and investigation capabilities.
+The objective is to maintain a continuously evolving view of financial crime risk and translate intelligence into practical detection, investigation and analytical capabilities.
