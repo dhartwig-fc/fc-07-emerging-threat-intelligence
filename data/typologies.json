@@ -1,0 +1,62 @@
+{
+  "version": "fixture-0.1",
+  "note": "Small fixture standing in for the Knowledge Centre. Replace with the governed typology export from FC10 in week 2.",
+  "typologies": [
+    {
+      "typology_id": "TBML001",
+      "family": "tbml",
+      "label": "Over and under invoicing of goods",
+      "summary": "Misrepresenting the price of goods on trade documents to move value across borders.",
+      "indicators": ["Unit price materially outside market range", "Same goods repeatedly re-invoiced between related parties"]
+    },
+    {
+      "typology_id": "TBML002",
+      "family": "tbml",
+      "label": "Phantom shipments",
+      "summary": "Payment for goods that were never shipped, supported by fabricated shipping documents.",
+      "indicators": ["Bill of lading not reconcilable to vessel movement", "Consignee address is a mailbox"]
+    },
+    {
+      "typology_id": "SANC001",
+      "family": "sanctions",
+      "label": "Sanctions evasion via front companies",
+      "summary": "Designated persons transact through newly formed entities with opaque ownership in third countries.",
+      "indicators": ["Entity incorporated within 90 days of a designation", "Shared directors with a designated party"]
+    },
+    {
+      "typology_id": "SANC002",
+      "family": "sanctions",
+      "label": "Shadow fleet maritime evasion",
+      "summary": "Vessels disable AIS, change flags and conduct ship-to-ship transfers to move sanctioned cargo.",
+      "indicators": ["AIS dark periods near known transfer zones", "Frequent flag changes"]
+    },
+    {
+      "typology_id": "CORR001",
+      "family": "correspondent_banking",
+      "label": "Nested correspondent relationships",
+      "summary": "A respondent bank offers its correspondent access to third banks without the correspondent's knowledge.",
+      "indicators": ["Payment volumes inconsistent with respondent's stated customer base", "Repeated originator fields naming other financial institutions"]
+    },
+    {
+      "typology_id": "CAPM001",
+      "family": "capital_markets",
+      "label": "Mirror trading",
+      "summary": "Matched buy and sell orders in different currencies used to move value offshore.",
+      "indicators": ["Same security bought and sold same day by linked accounts", "No economic rationale for the trade pair"]
+    },
+    {
+      "typology_id": "NETW001",
+      "family": "network",
+      "label": "Money mule herding",
+      "summary": "Coordinated recruitment of individuals whose accounts receive and forward illicit funds.",
+      "indicators": ["Rapid pass-through within 24 hours", "Many unrelated accounts sharing device or address"]
+    },
+    {
+      "typology_id": "CRYP001",
+      "family": "crypto",
+      "label": "Chain hopping through unhosted wallets",
+      "summary": "Converting between assets and chains to break the audit trail before cashing out at an exchange.",
+      "indicators": ["Cash-out immediately following multi-chain swaps", "Exposure to mixer or bridge addresses"]
+    }
+  ]
+}
