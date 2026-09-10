@@ -1,13 +1,19 @@
 """
 NEXUS Track 2 · Threat Intelligence · Slice 1
-Week 1 agent: one advisory PDF in, one validated AdvisoryRecord out.
+Extraction agent: one advisory PDF in, one validated AdvisoryRecord out.
 
 Usage:
     python agents/extract_advisory.py path/to/advisory.pdf --advisory-id ADV-2026-0001
 
-Week 1 runs without the MCP server. Week 2 passes the Knowledge Centre
-server in via `mcp_servers` so the agent looks up real typology IDs instead of
-guessing. The schema contract does not change between the two weeks.
+Week 1 pasted the typology library into the prompt. Week 2 (2026-09-10) removed
+it: the agent reaches the Knowledge Centre only through the MCP server in
+mcp_server/, so a typology_id can only come from a tool result. That is
+enforced three times, on purpose:
+  1. the propose_link tool refuses an id the library does not contain;
+  2. the prompt tells the agent to use the tools;
+  3. `_refuse_unknown_ids` below raises if the returned record names an id the
+     library does not hold, whatever the prompt said.
+Only 1 and 3 are governance. 2 is advice.
 """
 
 from __future__ import annotations
@@ -17,6 +23,7 @@ import asyncio
 import hashlib
 import json
 import sys
+from collections import Counter
 from pathlib import Path
 
 from pypdf import PdfReader
@@ -26,7 +33,18 @@ sys.path.insert(0, str(ROOT))
 
 from schemas.advisory import AdvisoryRecord  # noqa: E402
 
-from claude_agent_sdk import ClaudeAgentOptions, ResultMessage, query  # noqa: E402
+from claude_agent_sdk import AssistantMessage, ClaudeAgentOptions, ResultMessage, ToolUseBlock, query  # noqa: E402
+
+SERVER_KEY = "knowledge_centre"
+SERVER_PATH = ROOT / "mcp_server" / "knowledge_centre_server.py"
+LIBRARY_PATH = ROOT / "data" / "typologies.json"
+PROPOSALS_PATH = ROOT / "data" / "proposals.jsonl"
+KC_TOOLS = (
+    "knowledge_centre_list_typologies",
+    "knowledge_centre_get_typology",
+    "knowledge_centre_search_typologies",
+    "knowledge_centre_propose_link",
+)
 
 SYSTEM_PROMPT = """You are an intel extraction agent for a financial-crime threat-intelligence desk.
 You read regulator and industry advisories and reduce them to a governed record.
@@ -37,10 +55,16 @@ Rules:
 - Citation page is the n in the "=== PAGE n ===" marker above the text, never the number printed on the page. Put the printed number in printed_folio.
 - published_on_precision says how much of the date the document states. "December 2020" is 2020-12-01 with precision month.
 - A class of actor the document describes (organised crime groups, professional money launderers) is actor_type category, not organisation.
-- If a typology is not in the known library, mark it emergent and leave typology_id null.
 - Prefer fewer, well-cited items over many weakly supported ones.
 - Jurisdictions are ISO 3166-1 alpha-2 codes.
 - Put caveats for the human reviewer in extraction_notes.
+
+The Knowledge Centre:
+- You do not know the typology library. Look it up with the knowledge_centre_* tools.
+- For each technique the document describes, call knowledge_centre_search_typologies with a phrase from the document. Confirm a candidate with knowledge_centre_get_typology before using it.
+- A typology_id may only be one a tool returned. If the search reports no match, the typology is emergent: typology_id null, emergent true.
+- Two typologies can share a label; choose by family. When a result says its doctrine is authored as another id, prefer that id.
+- Before you finish, call knowledge_centre_propose_link once per typology in your record: with typology_id for a library match, with emergent_label for an emergent one. Cite page numbers in the rationale.
 """
 
 
@@ -61,56 +85,113 @@ def sha256_of(path: Path) -> str:
     return h.hexdigest()
 
 
-def build_prompt(advisory_id: str, path: Path, pages: list, known_typologies: list) -> str:
-    library = "\n".join("%s | %s | %s" % (t["typology_id"], t["family"], t["label"]) for t in known_typologies)
+def build_prompt(advisory_id: str, path: Path, pages: list) -> str:
     return (
         "Advisory ID to use: %s\n"
         "Document SHA-256: %s\n"
         "Page count: %d\n\n"
-        "Known typology library (id | family | label):\n%s\n\n"
-        "Document text follows. Produce the AdvisoryRecord.\n\n%s"
-        % (advisory_id, sha256_of(path), len(pages), library, "\n\n".join(pages))
+        "Document text follows. Resolve typologies through the Knowledge Centre tools, then produce the AdvisoryRecord.\n\n%s"
+        % (advisory_id, sha256_of(path), len(pages), "\n\n".join(pages))
     )
 
 
-async def extract(path: Path, advisory_id: str, model: str) -> AdvisoryRecord:
+def library_ids() -> set:
+    with open(LIBRARY_PATH, "r", encoding="utf-8") as fh:
+        return {t["typology_id"] for t in json.load(fh)["typologies"]}
+
+
+def _refuse_unknown_ids(record: AdvisoryRecord) -> None:
+    """Governance in code: a record may not name an id the library does not hold."""
+    known = library_ids()
+    unknown = sorted({t.typology_id for t in record.typologies if t.typology_id and t.typology_id not in known})
+    if unknown:
+        raise ValueError("record names typology ids the library does not contain: %s" % ", ".join(unknown))
+
+
+def _count_lines(path: Path) -> int:
+    if not path.exists():
+        return 0
+    with open(path, "r", encoding="utf-8") as fh:
+        return sum(1 for line in fh if line.strip())
+
+
+def mcp_servers() -> dict:
+    return {
+        SERVER_KEY: {
+            "type": "stdio",
+            "command": sys.executable,
+            "args": [str(SERVER_PATH)],
+            "env": {"NEXUS_TYPOLOGY_PATH": str(LIBRARY_PATH), "NEXUS_PROPOSALS_PATH": str(PROPOSALS_PATH)},
+        }
+    }
+
+
+async def extract(path: Path, advisory_id: str, model: str, max_budget_usd: float, max_turns: int) -> tuple:
     pages = pdf_to_pages(path)
-    with open(ROOT / "data" / "typologies.json", "r", encoding="utf-8") as fh:
-        known = json.load(fh)["typologies"]
+    proposals_before = _count_lines(PROPOSALS_PATH)
 
     options = ClaudeAgentOptions(
         system_prompt=SYSTEM_PROMPT,
         model=model,
-        max_turns=3,
-        allowed_tools=[],
+        max_turns=max_turns,
+        max_budget_usd=max_budget_usd,
+        mcp_servers=mcp_servers(),
+        # The CLI would also load the server registered with `claude mcp add` for
+        # this folder, giving the model two copies with different names and four
+        # permission denials per run (measured 2026-09-10). Only the one passed in.
+        strict_mcp_config=True,
+        allowed_tools=["mcp__%s__%s" % (SERVER_KEY, t) for t in KC_TOOLS],
         output_format={"type": "json_schema", "schema": AdvisoryRecord.model_json_schema()},
     )
 
     structured = None
-    async for message in query(prompt=build_prompt(advisory_id, path, pages, known), options=options):
-        if isinstance(message, ResultMessage):
+    tool_calls: Counter = Counter()
+    result: ResultMessage | None = None
+    async for message in query(prompt=build_prompt(advisory_id, path, pages), options=options):
+        if isinstance(message, AssistantMessage):
+            for block in message.content:
+                if isinstance(block, ToolUseBlock):
+                    tool_calls[block.name] += 1
+        elif isinstance(message, ResultMessage):
+            result = message
             if message.is_error:
                 raise RuntimeError("Agent run failed: %s" % (message.errors or message.result))
             structured = message.structured_output
 
     if structured is None:
-        raise RuntimeError("Agent returned no structured output")
-    return AdvisoryRecord.model_validate(structured)
+        raise RuntimeError("Agent returned no structured output (stop_reason=%s)" % (result.stop_reason if result else None))
+    record = AdvisoryRecord.model_validate(structured)
+    _refuse_unknown_ids(record)
+
+    telemetry = {
+        "tool_calls": dict(tool_calls),
+        "turns": result.num_turns if result else None,
+        "cost_usd": result.total_cost_usd if result else None,
+        "duration_s": round(result.duration_ms / 1000, 1) if result else None,
+        "permission_denials": len(result.permission_denials or []) if result else None,
+        "proposals_written": _count_lines(PROPOSALS_PATH) - proposals_before,
+    }
+    return record, telemetry
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Extract a governed AdvisoryRecord from one PDF")
     parser.add_argument("pdf", type=Path)
     parser.add_argument("--advisory-id", required=True, help="Governed ID, for example ADV-2026-0001")
-    parser.add_argument("--model", default="claude-sonnet-4-5", help="Model alias or ID")
+    parser.add_argument("--model", default="claude-sonnet-5", help="Model alias or ID")
     parser.add_argument("--out", type=Path, default=None, help="Where to write the JSON record")
+    parser.add_argument("--max-budget-usd", type=float, default=5.0, help="Hard cost cap for the run")
+    parser.add_argument("--max-turns", type=int, default=60, help="Turn cap; tool calls consume turns")
     args = parser.parse_args()
 
     if not args.pdf.exists():
         print("PDF not found: %s" % args.pdf, file=sys.stderr)
         return 2
+    if not SERVER_PATH.exists():
+        print("MCP server not found: %s" % SERVER_PATH, file=sys.stderr)
+        return 2
 
-    record = asyncio.run(extract(args.pdf, args.advisory_id, args.model))
+    record, telemetry = asyncio.run(extract(args.pdf, args.advisory_id, args.model, args.max_budget_usd, args.max_turns))
 
     out = args.out or (ROOT / "data" / "records" / ("%s.json" % args.advisory_id))
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -124,6 +205,7 @@ def main() -> int:
         len(record.indicators),
         ", ".join(d.value for d in record.suggested_desks),
     ))
+    print("Telemetry: %s" % json.dumps(telemetry, sort_keys=True))
     return 0
 
 

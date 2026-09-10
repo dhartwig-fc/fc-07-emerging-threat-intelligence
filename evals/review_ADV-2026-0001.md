@@ -184,6 +184,60 @@ Two limits, recorded rather than fixed:
   ties PAT001, PAT007 and SAN001 at 1.00. The agent sees all three with
   labels; that is the honest answer for three stems.
 
+## Week 2 step 3: the agent grounded on tools, same document
+
+`agents/extract_advisory.py` now passes the Knowledge Centre server via
+`mcp_servers`, allows the four `knowledge_centre_*` tools, and carries no
+library in the prompt. A typology_id can only come from a tool result, and
+that is enforced in code: the propose tool refuses unknown ids, and
+`_refuse_unknown_ids` raises if the returned record names one anyway. The
+prompt says the same thing, which is advice, not governance.
+
+Run: `claude-sonnet-5`, 49 turns, 6m45s, $1.14, 43 Knowledge Centre calls
+(19 search, 8 get, 12 propose). Week-1 record kept at
+`data/records/ADV-2026-0001.week1-schema-1.1.0.json`.
+
+| | Week 1, fixture in prompt | Week 2, tools |
+|---|---|---|
+| Typologies resolved to library ids | 2, one of them wrong in governed terms | **7**: TBML001, 002U, 003, 004, 005, 008, 009 |
+| Emergent | 5 | 5 |
+| Proposals in the review queue | 0 | 12, one per typology, reconciled both ways |
+| Ids outside the library | n/a | 0 |
+| Citations on the page they name | 14 of 15 | **5 of 21** |
+
+**What improved.** Under-invoicing resolved to TBML002U, third-party invoice
+settlement to TBML008, multiple invoicing and false description of goods to
+TBML003 and TBML005, none of which the fixture had. The agent saw that
+TBML002's doctrine is borrowed from TBML001 and did not link it, and it
+read the search's "no match" as emergent five times, including
+services-based ML, which week 1 had excluded by judgement. Every proposal in
+`data/proposals.jsonl` is `pending_review`; nothing wrote to the library.
+
+**What regressed, and why it matters more than the win.** In 15 of 21
+citations the agent swapped the two page fields: the PDF index went into
+`printed_folio` and the folio into `page`. Both numbers were correct; the
+assignment was not. Week 1's rerun got this right 14 of 15 times on the same
+prompt line. Under 49 turns of tool traffic the prompt rule stopped holding.
+That is the difference between advice and governance made visible: the id
+rule is enforced in code and held; the page rule is prose and did not. The
+checker caught it and exits 1.
+
+The durable fix is structural, deliberately not applied before the golden set
+exists: put the folio in the page marker the agent reads
+(`=== PAGE 28 · printed 26 ===`) so the mapping is where the text is, and
+have the week-4 reviewer swap or reject. Recorded, not tuned.
+
+**Two environment findings.** The Claude Code registration from step 1 leaked
+into the SDK run: the CLI loaded the folder's registered `knowledge-centre`
+alongside the SDK's `knowledge_centre`, so the model saw two copies and hit
+four permission denials on the hyphenated one. `strict_mcp_config=True` maps
+to the CLI's `--strict-mcp-config` and fixes it; verified with a one-tool
+probe, zero denials. And fc-10's export marks TBML002U as "authored as
+TBML002" because its writeup lives under `typologies/TBML002/`, while TBML002
+itself is "authored as TBML001". The chain is an fc-10 curator artefact; the
+agent saw through it and said so in `extraction_notes`. Worth an fc-10 fix so
+the hint is not misleading for the one under-invoicing code.
+
 ## Week 1 status
 
 - [x] Extraction run on a real advisory, record validates
