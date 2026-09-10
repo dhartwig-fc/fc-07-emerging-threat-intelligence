@@ -11,7 +11,8 @@ The pre-existing folders (`analytics-opportunities/`, `intelligence/`, `roadmap/
 ## Stack and versions (verified 10 Sep 2026)
 
 - Python 3.14 in `.venv` (activate with `. .venv/bin/activate`)
-- `claude-agent-sdk` 0.2.x, `mcp` 2.2.x (**MCPServer**, not FastMCP), `pydantic` 2.13, `pypdf` 6
+- `claude-agent-sdk` 0.2.x, `mcp` 2.2.x (**MCPServer**, not FastMCP; client results are snake_case: `init.server_info`, `init.protocol_version`, annotations `read_only_hint`), `pydantic` 2.13, `pypdf` 6
+- The Agent SDK drives the `claude` CLI, whose login is SEPARATE from the desktop app. Check `claude auth status` first. fatf-gafi.org blocks curl; fetch advisories through a real browser
 - The Agent SDK drives the Claude Code CLI; it must be installed and signed in
 - macOS, Bash 3.2. No `declare -A`, no `mapfile`. Full-file replacements only, never partial snippets or edit-in-place instructions
 
@@ -22,7 +23,8 @@ PLAN.md                            six-week plan and definition of done
 schemas/advisory.py                AdvisoryRecord contract (schema v1.0.0) — the treaty
 mcp_server/knowledge_centre_server.py   Knowledge Centre as MCP tools (read-only + propose)
 agents/extract_advisory.py         week-1 single-advisory extraction agent
-data/typologies.json               fixture library; swap for FC10 export in week 2
+data/typologies.json               GOVERNED export of fc-10's doctrine library (57 typologies); never hand-edit
+tools/import_fc10_doctrine.py      regenerates it from fc-10's indexes/doctrine_library.json; deterministic, provenance = fc-10 commit + sha256
 data/advisories/                   source PDFs (gitignored)
 data/records/                      validated AdvisoryRecord JSON (gitignored)
 data/proposals.jsonl               review queue written by the MCP server (gitignored)
@@ -56,7 +58,7 @@ claude mcp add knowledge-centre -- "$PWD/.venv/bin/python" "$PWD/mcp_server/know
 
 - [x] Week 0: repo scaffolded, schema validates, MCP server imports on mcp 2.2.0
 - [x] Week 1 (2026-09-10): FATF TBML 2020 extracted twice; schema argued with and bumped to 1.1.0 (PDF page index + printed_folio, published_on_precision, ActorType.CATEGORY). Review and numbers in `evals/review_ADV-2026-0001.md`; citation checker in `evals/check_citations.py`. Nothing committed yet.
-- [ ] Week 2: MCP server registered; library removed from prompt; agent grounded on tools
+- [~] Week 2 (started 2026-09-10): MCP server registered (`claude mcp get knowledge-centre` shows Connected) and driven over stdio by a client; fixture replaced by the governed fc-10 export (schema 1.2.0 widens typology_id to allow TBML002U). STILL TO DO: pass the server to the agent via `mcp_servers`, remove the pasted library from the prompt, re-run ADV-2026-0001 and diff. Search tool rewritten (stemmed IDF + label bonus + floor 0.25); `evals/search_probes.py` went 8-of-12 missing to 12-of-12, mutation-verified. Run it after ANY change to the library or the scorer.
 - [ ] Week 3: 20-advisory golden set and `evals/score.py`
 - [ ] Week 4: fetcher / extractor / classifier / reviewer subagents
 - [ ] Week 5: hooks, telemetry, `review.py` gate, desk digests

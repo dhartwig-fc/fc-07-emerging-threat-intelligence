@@ -15,7 +15,10 @@ from typing import List, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
-SCHEMA_VERSION = "1.1.0"
+SCHEMA_VERSION = "1.2.0"
+# 1.2.0 (2026-09-10, week 2, on importing the governed FC10 library):
+#   - typology_id pattern allows one trailing letter: the governed library carries
+#     TBML002U (under-invoicing, re-slotted beside fc-10's load-bearing TBML002)
 # 1.1.0 (2026-09-10, after the first real extraction, see evals/review_ADV-2026-0001.md):
 #   - Citation.page is the PDF page index, not the printed folio; printed_folio added
 #   - AdvisorySource.published_on_precision added; a day the source never states is not a fact
@@ -119,8 +122,8 @@ class TypologyReference(BaseModel):
     family: TypologyFamily
     typology_id: Optional[str] = Field(
         None,
-        pattern=r"^[A-Z]{2,6}\d{3}$",
-        description="Knowledge Centre ID such as TBML001. None means emergent candidate.",
+        pattern=r"^[A-Z]{2,6}\d{3}[A-Z]?$",
+        description="Knowledge Centre ID such as TBML001 or TBML002U. None means emergent candidate.",
     )
     label: str = Field(..., min_length=3, max_length=120)
     emergent: bool = Field(False, description="True when no existing typology matches")

@@ -1,62 +1,1022 @@
 {
-  "version": "fixture-0.1",
-  "note": "Small fixture standing in for the Knowledge Centre. Replace with the governed typology export from FC10 in week 2.",
+  "version": "fc10-66bcc68c",
+  "source": {
+    "repository": "fc-10-intelligence-repository-layer",
+    "file": "indexes/doctrine_library.json",
+    "sha256": "dd778056ef5c288b789bd0d7d45749ed811a4558b59e79af2b448b99d1df6d31",
+    "library_schema_version": "1.0",
+    "typology_count": 57
+  },
+  "note": "Governed export from fc-10's doctrine library. Regenerate with tools/import_fc10_doctrine.py; never hand-edit.",
   "typologies": [
+    {
+      "typology_id": "BA001",
+      "family": "correspondent_banking",
+      "label": "Structuring",
+      "summary": "Structuring — known colloquially as \"smurfing\" — is the deliberate breaking-up of cash deposits into amounts just under a currency-transaction reporting threshold (in the US, the $10,000 CTR line) to keep individual deposits below the reporting trigger while the account accumulates a large aggregate cash position. The structured cash is then moved onward — wired out to a single beneficiary — turning a pattern of small, evasive deposits into a laundering leg.",
+      "indicators": [
+        "High share of cash deposits sitting just under the CTR reporting line",
+        "Deposit amounts clustered near (but under) the threshold rather than spread naturally",
+        "Round-number deposits inconsistent with the account's declared cash profile",
+        "Multiple deposits inside a rolling 7-day window",
+        "Deposit cadence inconsistent with normal payroll/business cash cycles",
+        "Deposits spread across several branches or ATMs on the same day or in the same window",
+        "Geographic spread inconsistent with the customer's declared home location",
+        "Structured-in cash wired out to a single downstream beneficiary",
+        "Wire timing shortly after the structured cash accumulates (short dwell)"
+      ],
+      "doctrine_file": "fc-06-correspondent-banking-analytics-toolkit/typologies/BA001_Structuring.md"
+    },
+    {
+      "typology_id": "BA002",
+      "family": "correspondent_banking",
+      "label": "Funnel Accounts",
+      "summary": "A funnel account is a collection point: it receives many small, geographically-dispersed deposits from unrelated depositors, then rapidly moves the aggregated funds onward to a single downstream beneficiary before the pattern can be reviewed. It is the collection-side mirror of BA001 Structuring — where structuring conceals the deposit pattern beneath a reporting line, funnelling conceals the collection pattern behind volume and dispersion, then clears the account out fast.",
+      "indicators": [
+        "Deposits sourced from many distinct regions inconsistent with a single local customer base",
+        "Depositor locations with no plausible relationship to the account holder's declared",
+        "A large number of distinct, apparently unrelated depositors feeding one account",
+        "Deposit sizes individually unremarkable, but the depositor count itself is anomalous",
+        "Funds clearing onward within hours of landing, with no plausible accumulation purpose",
+        "Passthrough timing inconsistent with the account's declared business cycle",
+        "Outbound funds concentrated on a single downstream beneficiary rather than dispersed",
+        "Beneficiary already flagged elsewhere in the network"
+      ],
+      "doctrine_file": "fc-06-correspondent-banking-analytics-toolkit/typologies/BA002_Funnel_Accounts.md"
+    },
+    {
+      "typology_id": "BA003",
+      "family": "correspondent_banking",
+      "label": "Mule Accounts",
+      "summary": "A mule account is a personal account used purely as a pass-through point: it receives illicit funds from one or more originators and forwards them onward almost immediately, retaining little or nothing for itself. It is the personal-account mirror of BA002 Funnel Accounts — where funnelling hides behind volume and dispersion on the collection side, muling hides behind an individual's identity and a thin personal-banking profile, moving money at a controller's instruction rather than the account holder's own initiative.",
+      "indicators": [
+        "Outbound transfers landing within hours or days of the matching inbound funds",
+        "Balance held on the account never accumulating despite regular large inflows",
+        "Account opened in the weeks immediately before illicit flows begin",
+        "No prior transaction history consistent with genuine personal banking",
+        "Monthly throughput many multiples of the declared salary or stated income",
+        "Transaction profile inconsistent with the account holder's declared occupation",
+        "Shared device or IP address with other accounts already flagged as mules",
+        "Shared downstream beneficiary or forwarding destination across multiple accounts",
+        "A controller instructing multiple, apparently unrelated account holders"
+      ],
+      "doctrine_file": "fc-06-correspondent-banking-analytics-toolkit/typologies/BA003_Mule_Accounts.md"
+    },
+    {
+      "typology_id": "BA004",
+      "family": "correspondent_banking",
+      "label": "Circular Funds Flow",
+      "summary": "A circular funds flow is a round-tripping loop: funds leave an originating account, pass through one or more intermediary accounts, and return to the same origin (or an account under the same control) having taken on the appearance of unrelated third-party activity along the way. It is BA003 Mule Accounts run backwards — where a mule forwards funds onward and never sees them again, a circular flow is engineered so the ORIGINATOR gets the funds back, laundered through the round trip itself.",
+      "indicators": [
+        "Funds returning to the origin account within the same reporting cycle they left it",
+        "Balance movements that net to near-zero over the round trip despite large gross flows",
+        "Multiple intermediary accounts carrying the funds between origin and return",
+        "Intermediaries with no independent commercial rationale for holding the funds",
+        "Amounts moving hop to hop with negligible fee or FX erosion",
+        "Round-number consistency across legs inconsistent with genuine trade settlement",
+        "The full round trip completing in hours or a few days",
+        "Legs scheduled back-to-back rather than at a pace consistent with real commercial timing"
+      ],
+      "doctrine_file": "fc-06-correspondent-banking-analytics-toolkit/typologies/BA004_Circular_Funds_Flow.md"
+    },
+    {
+      "typology_id": "BA005",
+      "family": "correspondent_banking",
+      "label": "Rapid Movement",
+      "summary": "Rapid movement is the velocity / layering signal at the heart of correspondent-banking monitoring: funds land on an account and clear back out again almost immediately, resting only long enough to register a balance change before they are gone. It is not defined by who sent the money or where it ends up — those can look entirely ordinary on any single leg — it is defined by HOW FAST the funds move and HOW MUCH volume passes through an account relative to what it normally holds.",
+      "indicators": [
+        "Inbound funds clearing back out within hours of arrival",
+        "Balance spikes that resolve to near-baseline within the same reporting cycle",
+        "Turnover many multiples of the account's own average balance",
+        "Throughput inconsistent with the account's declared purpose or segment",
+        "Outbound funds splitting across several distinct onward destinations",
+        "Destinations with no independent commercial rationale for receiving the funds",
+        "Outbound amounts tracking inbound amounts almost 1:1",
+        "Round-number consistency between inbound and outbound legs inconsistent with genuine"
+      ],
+      "doctrine_file": "fc-06-correspondent-banking-analytics-toolkit/typologies/BA005_Rapid_Movement.md"
+    },
+    {
+      "typology_id": "BA006",
+      "family": "correspondent_banking",
+      "label": "Dormant Reactivation",
+      "summary": "Dormant reactivation is the behavioural-anomaly signal at the far end of the account lifecycle: an account that has sat idle -- sometimes for months, sometimes for years -- suddenly comes back to life with flows that dwarf anything it ever carried while active. The finding is not any single transaction on its own; a large deposit or a new counterparty can each look ordinary in isolation. What makes it a finding is the CONTRAST between the account's long silence and the size, shape and speed of what happens the moment it wakes up.",
+      "indicators": [
+        "A reactivating inflow many multiples of the account's pre-dormancy average monthly",
+        "No gradual ramp-up -- the account jumps straight to elevated activity",
+        "Extended idle periods, often exceeding a year, before the reactivating inflow lands",
+        "No account-closure or re-KYC event during the dormant period",
+        "New counterparties appearing immediately after reactivation with no prior relationship",
+        "New geographies inconsistent with the account's established footprint",
+        "Outbound amounts tracking the reactivating inflow almost 1:1",
+        "Round-number consistency between the reactivating inflow and the outbound leg"
+      ],
+      "doctrine_file": "fc-06-correspondent-banking-analytics-toolkit/typologies/BA006_Dormant_Reactivation.md"
+    },
+    {
+      "typology_id": "BA007",
+      "family": "correspondent_banking",
+      "label": "Cash Intensive Activity",
+      "summary": "A cash-intensive business is a legitimate cover for laundering physical cash: cash & carry wholesalers, currency exchange houses, laundromats, and similar operators that plausibly handle real cash every day. The tell is not the presence of cash — it is cash disproportionate to the business's own declared profile, layered with the tells that separate genuine trade volume from placement.",
+      "indicators": [
+        "Cash share of turnover running multiples of the business's own peer-segment norm",
+        "Cash-to-turnover ratio inconsistent with the declared business type",
+        "Actual cash deposited materially exceeding the volume declared at KYC onboarding",
+        "No plausible business explanation for the growth in cash handled",
+        "Deposits landing with an unnaturally even size and cadence",
+        "Coefficient of variation far below what a genuine retail cash business exhibits",
+        "Deposited cash traceable to unrelated third parties, not the business's own sales",
+        "Linked entities or depositors with no plausible commercial relationship to the account"
+      ],
+      "doctrine_file": "fc-06-correspondent-banking-analytics-toolkit/typologies/BA007_Cash_Intensive_Activity.md"
+    },
+    {
+      "typology_id": "BA008",
+      "family": "correspondent_banking",
+      "label": "Layering",
+      "summary": "Layering is the classic middle stage of money laundering: funds already placed into the financial system are pushed through a chain of transfers designed to sever the audit trail from their source before the proceeds are integrated into legitimate-looking assets. Unlike BA004 Circular Funds Flow (engineered to return to the originator), a layering chain has no obligation to close a loop — its only job is to put distance, opacity and jurisdictional friction between the seed account and wherever the funds end up.",
+      "indicators": [
+        "Multiple transfer hops between the seed account and the funds' eventual destination",
+        "A trail that goes cold well before it reaches an identifiable beneficial owner",
+        "Intermediaries that are shell companies or nominee entities with no independent",
+        "Corporate registries that show recently-formed entities with no verifiable trading history",
+        "Cross-border routing through recognised secrecy or offshore jurisdictions",
+        "Jurisdiction choices inconsistent with the seed account's declared business geography",
+        "The seed amount split into multiple fragments across the chain",
+        "Fragments re-merged downstream in combinations that defeat simple amount-matching"
+      ],
+      "doctrine_file": "fc-06-correspondent-banking-analytics-toolkit/typologies/BA008_Layering.md"
+    },
+    {
+      "typology_id": "BA009",
+      "family": "correspondent_banking",
+      "label": "Transaction Laundering",
+      "summary": "Transaction laundering is a legitimate-looking merchant account used as a payment processing front for hidden third parties: a card-processing relationship underwritten against one declared business is quietly used to clear volume for merchants — or principals — the acquirer never screened. Unlike BA007 Cash Intensive Activity (physical cash disproportionate to a declared profile), the tell here runs through the CARD RAILS themselves.",
+      "indicators": [
+        "Processed card volume running multiples of the merchant's own declared business volume",
+        "Volume growth with no plausible business explanation",
+        "Unrelated sub-merchants folded into the one boarded processing relationship",
+        "Multiple unconnected storefronts settling to the same underlying account",
+        "Transaction types inconsistent with the boarded merchant category code",
+        "A \"retail goods\" MCC clearing digital, subscription or cash-equivalent transaction types",
+        "An elevated refund/chargeback rate with no genuine customer dispute cycle",
+        "Self-refunds or test transactions inconsistent with real commerce"
+      ],
+      "doctrine_file": "fc-06-correspondent-banking-analytics-toolkit/typologies/BA009_Transaction_Laundering.md"
+    },
+    {
+      "typology_id": "BA010",
+      "family": "correspondent_banking",
+      "label": "Peer Group Anomalies",
+      "summary": "Most correspondent-banking analytics compare an account against a fixed, absolute threshold — a dollar cut-line, a transaction count, a ratio. Peer group anomaly detection compares an account against the STATISTICAL PROFILE OF ITS OWN PEER SEGMENT instead: accounts of a similar type, size and declared business purpose. A transaction volume that is unremarkable for a high-turnover corporate current account can be a strong deviation signal for a retail deposit account, and vice versa — a fixed threshold misses this, a peer-relative model does not.",
+      "indicators": [
+        "Transaction volume running multiple standard deviations above the peer segment mean",
+        "Volume growth with no plausible peer-consistent business explanation",
+        "Turnover velocity (transactions per period) inconsistent with the peer segment's norm",
+        "A rate of fund movement that outpaces the segment's typical pattern",
+        "A product/channel footprint markedly narrower or wider than the peer segment's norm",
+        "Usage inconsistent with the account's declared segment and business purpose",
+        "An unusually wide or unusually concentrated counterparty footprint against the peer norm",
+        "A single anomalous counterparty accounting for a peer-inconsistent share of activity"
+      ],
+      "doctrine_file": "fc-06-correspondent-banking-analytics-toolkit/typologies/BA010_Peer_Group_Anomalies.md"
+    },
+    {
+      "typology_id": "CM001",
+      "family": "capital_markets",
+      "label": "Insider Trading",
+      "summary": "Insider trading is dealing in a financial instrument while in possession of material non-public information (MNPI) — an earnings release, an M&A announcement, a regulatory decision — ahead of the event's public disclosure. The finding is a convergence finding: it lives in how large the trader's position build is relative to their normal activity, how close to the event the position was built, whether there is a documented information-access linkage between the trader and a source with early knowledge, and how much profit is realised once the event's price impact lands.",
+      "indicators": [
+        "Position build materially larger than the trader's normal average position",
+        "Position sized and directed inconsistently with the trader's stated mandate",
+        "Position concentrated in a single issuer or a small basket around one event",
+        "Position build concentrated in the days immediately before the event",
+        "Order timing inconsistent with the trader's normal trading cadence",
+        "Documented contact events with a corporate insider, advisor or corporate-access",
+        "Contact frequency inconsistent with the trader's normal coverage relationships",
+        "Source has known access to the issuer's material non-public information",
+        "Realised profit disproportionate to the position's entry value once the event lands",
+        "Profit timing tightly coupled to the event's public disclosure"
+      ],
+      "doctrine_file": "fc-07-capital-markets-analytics-toolkit/typologies/CM001_Insider_Trading.md"
+    },
+    {
+      "typology_id": "CM002",
+      "family": "capital_markets",
+      "label": "Market Manipulation",
+      "summary": "Market manipulation is the artificial distortion of a security's price or volume to create a false or misleading impression of supply, demand, or price, so a position can be exited — or a benchmark can be gamed — at an advantage. The finding is a convergence finding: it lives in how large the price move is relative to the instrument's normal volatility, how concentrated the account's footprint is against total market volume, whether the trading is coordinated across linked accounts, and how much of the price move reverses once the manipulative window closes — the tell that the move was not inf",
+      "indicators": [
+        "Price move materially larger than the instrument's normal volatility",
+        "Move concentrated in a short surveillance window rather than a sustained trend",
+        "Move inconsistent with any contemporaneous public news or disclosure",
+        "Account share of total market volume disproportionate to its normal trading pattern",
+        "Volume concentrated in a thin or illiquid instrument",
+        "Order flow inconsistent with the account's stated trading mandate",
+        "Multiple accounts trading in concert, in the same direction, in the same window",
+        "Linked accounts sharing common beneficial ownership, venue, or execution timing",
+        "Coordination frequency inconsistent with independent trading decisions",
+        "Price move largely unwinds once the manipulative window closes",
+        "Reversal timing tightly coupled to the account's own exit, not to any market news",
+        "Reversal magnitude disproportionate to the size of the original move"
+      ],
+      "doctrine_file": "fc-07-capital-markets-analytics-toolkit/typologies/CM002_Market_Manipulation.md"
+    },
+    {
+      "typology_id": "CM003",
+      "family": "capital_markets",
+      "label": "Spoofing",
+      "summary": "Spoofing is placing orders on one side of an order book with no intention of letting them execute, in order to move the visible order book and induce other participants to trade at a manipulated price, then cancelling the spoof orders and executing genuine trades on the opposite side once the market has reacted. The finding is a convergence finding: it lives in how large a share of order value is never genuinely intended to execute, how fast those orders are cancelled before the market can treat them as real, how much visible depth on one side the spoof orders manufacture, and how much genuine",
+      "indicators": [
+        "Order value materially larger than the trader's genuine execution history would predict",
+        "Orders sized and directed to move the visible book rather than to execute",
+        "Order flow concentrated in a single instrument or a small basket around one venue",
+        "Orders cancelled within seconds of placement, well inside normal market reaction time",
+        "Cancellation timing inconsistent with the trader's normal order-management cadence",
+        "Spoof orders manufacturing a majority share of visible depth on one side",
+        "Depth imbalance inconsistent with genuine two-sided liquidity provision",
+        "Imbalance timed to coincide with opposite-side execution",
+        "Genuine execution disproportionate to normal fill rates while the book is skewed",
+        "Execution timing tightly coupled to the spoof orders' cancellation"
+      ],
+      "doctrine_file": "fc-07-capital-markets-analytics-toolkit/typologies/CM003_Spoofing.md"
+    },
+    {
+      "typology_id": "CM004",
+      "family": "capital_markets",
+      "label": "Layering",
+      "summary": "This is ORDER-BOOK layering — staggering non-bona-fide orders across multiple price levels on one side of the book to create a false impression of depth or intent, moving the price or inducing other participants to trade against it, then cancelling the staggered orders before they are ever meant to execute. It is distinct from the AML \"layering\" typology, which moves illicit funds through successive transactions to obscure their origin; CM004 is a market-abuse pattern in the order book, not a money- laundering placement/layering/integration stage. The finding is a convergence finding: it lives",
+      "indicators": [
+        "Orders staggered across a materially wide spread of distinct price levels",
+        "Order-book footprint inconsistent with the trader's stated mandate",
+        "Level distribution concentrated in a single instrument or venue",
+        "Orders placed far exceeding orders ever executed",
+        "Order flow inconsistent with the trader's normal order-to-trade profile",
+        "Order cadence timed to precede price movement rather than to trade",
+        "A material share of visible book depth created on one side by the staggered orders",
+        "Imbalance timed to coincide with other participants' order flow",
+        "Imbalance disproportionate to the trader's genuine position objective",
+        "Staggered orders pulled within seconds of the book moving",
+        "Reversal timing tightly coupled to a price move or a counterparty's response",
+        "Cancellation pattern inconsistent with genuine liquidity provision"
+      ],
+      "doctrine_file": "fc-07-capital-markets-analytics-toolkit/typologies/CM004_Layering.md"
+    },
+    {
+      "typology_id": "CM005",
+      "family": "capital_markets",
+      "label": "Wash Trading",
+      "summary": "Wash trading is trading that produces no genuine change in beneficial ownership — matched buy and sell orders crossed against each other, directly or through a small, concentrated ring of counterparties, to manufacture volume, mark a price, or create a misleading impression of liquidity or interest in an instrument. The finding is a convergence finding: it lives in how much of the account's own volume matches against its own opposing orders, whether the buy-side and sell-side beneficial ownership overlaps, how much reported volume exceeds the volume genuinely changing hands, and how concentrat",
+      "indicators": [
+        "Self-matched volume materially larger than would occur from ordinary market making",
+        "Buy and sell orders entered in close time proximity at matching size and price",
+        "Self-matching pattern inconsistent with the account's stated trading strategy",
+        "Documented overlap between the buy-side and sell-side beneficial ownership",
+        "Common control, common directors, or common registered address across counterparties",
+        "Overlap inconsistent with an arm's-length trading relationship",
+        "Reported volume materially exceeding the volume reflecting genuine economic activity",
+        "Volume inflation concentrated around price-sensitive windows (close, index inclusion)",
+        "Reporting inconsistent with the instrument's normal turnover profile",
+        "Volume concentrated in one or two distinct counterparties",
+        "Counterparty concentration inconsistent with the account's normal execution spread",
+        "Counterparties clearing through a shared broker with no independent price discovery"
+      ],
+      "doctrine_file": "fc-07-capital-markets-analytics-toolkit/typologies/CM005_Wash_Trading.md"
+    },
+    {
+      "typology_id": "CM006",
+      "family": "capital_markets",
+      "label": "Front Running",
+      "summary": "Front running is a trader dealing on their own account ahead of a client order they know is coming, positioned in the same direction, then closing out once the client's order has moved the market. The finding is a convergence finding: it lives in how many seconds before the client's own order the trader's order was placed, how strongly the trader's pre-position direction correlates with the client order's direction, how disproportionate the profit captured is once the client order lands, and whether there is a documented knowledge linkage between the trader and the desk handling the client ord",
+      "indicators": [
+        "Trader's own order placed only seconds before the client's order",
+        "Order timing inconsistent with the trader's normal execution cadence",
+        "Repeated pattern of dealing immediately ahead of the same client's flow",
+        "Trader's pre-position direction strongly correlated with the client order's direction",
+        "Position sized and directed inconsistently with the trader's stated mandate",
+        "Position concentrated around a single client's order rather than a market view",
+        "Realised profit disproportionate to the position's value once the client order lands",
+        "Profit timing tightly coupled to the client order's execution",
+        "Position closed out immediately after the client order completes",
+        "Documented contact events with the desk handling the client order in the 90 days",
+        "Contact frequency inconsistent with the trader's normal coverage relationships",
+        "Trader has access to the client order management system or desk communications"
+      ],
+      "doctrine_file": "fc-07-capital-markets-analytics-toolkit/typologies/CM006_Front_Running.md"
+    },
+    {
+      "typology_id": "CM007",
+      "family": "capital_markets",
+      "label": "Pump and Dump",
+      "summary": "Pump and dump is coordinated promotion of a thinly-traded, low-float instrument to inflate its price on false or misleading enthusiasm, followed by distribution of the promoter's (and colluding accounts') position into the retail buying the promotion creates. The finding is a convergence finding: it lives in how concentrated the account's pre-promotion accumulation of the free float is, how large the burst of coordinated promotional activity around the campaign is, how far the peak price runs beyond the instrument's baseline, and how much of the position is distributed into retail once the pri",
+      "indicators": [
+        "Free-float share accumulated materially larger than a passive market position",
+        "Accumulation concentrated in a single thinly-traded instrument ahead of promotion",
+        "Position built quietly, ahead of any public promotional activity",
+        "Burst of coordinated posts, messages or accounts around a single campaign",
+        "Promotional content inconsistent with the instrument's public disclosures",
+        "Coordination frequency inconsistent with organic retail interest",
+        "Peak price materially above the instrument's pre-campaign baseline",
+        "Price spike timed tightly to the promotional burst",
+        "Price action inconsistent with any underlying corporate news",
+        "Volume distributed into retail disproportionate to the account's total position",
+        "Distribution timing tightly coupled to the peak of the promotional campaign",
+        "Retail buying concentrated in the window the price is inflated"
+      ],
+      "doctrine_file": "fc-07-capital-markets-analytics-toolkit/typologies/CM007_Pump_and_Dump.md"
+    },
+    {
+      "typology_id": "CM008",
+      "family": "capital_markets",
+      "label": "Cross Market Abuse",
+      "summary": "Cross market abuse exploits the link between an account's cash position and a correlated derivative — or a position that spans multiple trading venues — using a trade on one leg to move the price of the other. The finding is a convergence finding: it lives in how tightly the account's cash and derivative (or cross-venue) positions correlate, how many distinct venues or instruments the correlated activity spans, how much of the price impact on the primary instrument transfers to the correlated instrument, and how tightly synchronised the trades across venues are in time — the tighter the synchr",
+      "indicators": [
+        "Correlation between cash and derivative (or cross-venue) positions materially",
+        "Correlated positions concentrated in a single issuer or a small instrument basket",
+        "Position direction consistent across venues, inconsistent with independent trading",
+        "Correlated activity spread across a growing number of distinct venues or instruments",
+        "New venues added to the pattern shortly before a price-sensitive move",
+        "Venue mix spanning cash, listed derivatives and OTC products",
+        "A material share of the price impact on the primary instrument showing up on the",
+        "Price-impact transfer disproportionate to the correlated instrument's normal",
+        "Trades across venues clustered within a tight time window",
+        "Order timing inconsistent with the account's normal cross-venue trading cadence"
+      ],
+      "doctrine_file": "fc-07-capital-markets-analytics-toolkit/typologies/CM008_Cross_Market_Abuse.md"
+    },
+    {
+      "typology_id": "CM009",
+      "family": "capital_markets",
+      "label": "Benchmark Manipulation",
+      "summary": "Benchmark manipulation is the deliberate skewing of a regulated fixing — a reference rate, an FX fix, a commodity settlement price — through order flow concentrated in the closing seconds of the fixing window, when there is no longer time for the market to absorb it. The finding is a convergence finding: it lives in how much of an account's total daily volume is concentrated inside the fixing window itself, how far the resulting price deviation runs beyond the instrument's normal deviation for that window, how close to the window's close the order was placed, and whether the same account shows",
+      "indicators": [
+        "Volume concentrated inside the fixing window materially larger than the account's",
+        "Order sizing inconsistent with the account's stated trading mandate",
+        "Concentration clustered around a single benchmark or a small basket of fixings",
+        "Fixing price deviation running far beyond the instrument's normal deviation for that",
+        "Price impact reverting sharply once the fixing window closes",
+        "Distortion inconsistent with contemporaneous market-wide moves",
+        "Orders placed in the final seconds before the fixing window's close",
+        "Order timing inconsistent with the account's normal execution cadence",
+        "Timing precision that leaves no window for the market to absorb the flow",
+        "Multiple prior fixing windows showing the same concentration-and-timing signature",
+        "Repeat pattern concentrated on the same benchmark or the same issuer",
+        "Escalating repeat frequency without a corresponding change in mandate"
+      ],
+      "doctrine_file": "fc-07-capital-markets-analytics-toolkit/typologies/CM009_Benchmark_Manipulation.md"
+    },
+    {
+      "typology_id": "CM010",
+      "family": "capital_markets",
+      "label": "Suspicious Order Patterns",
+      "summary": "Suspicious order patterns are the family's purely order-flow-behavioural typology: quote stuffing, momentum ignition, and abnormal cancel/amend rates. There is no single rule that condemns a trading account here — the finding is a convergence finding: it lives in how abnormal the cancel/amend rate is, how intense the peak order-submission rate is, how far price moves after an order burst relative to the instrument's normal move, and how far the average order size departs from the account's normal size.",
+      "indicators": [
+        "Cancel/amend rate far beyond what genuine trading activity produces",
+        "Cancellations clustered in short bursts rather than spread across the session",
+        "Orders entered and withdrawn before any realistic chance of execution",
+        "Peak order-submission rate well beyond the account's normal cadence",
+        "Submission bursts timed around key price levels or reference points",
+        "Order-book depth distorted by high-frequency, low-intent order flow",
+        "Price move after the order burst well beyond the instrument's normal move",
+        "Directional move immediately following a cancel/amend or submission spike",
+        "Move not corroborated by underlying news, fundamentals or genuine volume",
+        "Average order size well beyond the account's normal size",
+        "Size anomaly concentrated in the same window as the order burst",
+        "Order sizing inconsistent with the account's declared trading mandate"
+      ],
+      "doctrine_file": "fc-07-capital-markets-analytics-toolkit/typologies/CM010_Suspicious_Order_Patterns.md"
+    },
+    {
+      "typology_id": "CMI010",
+      "family": "sanctions",
+      "label": "Cryptocurrency Evasion",
+      "summary": "Cryptocurrency Evasion is the use of virtual assets — wallet clusters and virtual-asset service providers (VASPs) — to move value around sanctions. It sits under the Crypto & Market Intelligence line (hence the CMI prefix) but ships in the sanctions suite because the exposure it measures is a sanctions exposure.",
+      "indicators": [
+        "Direct exposure to a sanctioned wallet",
+        "Mixer / tumbler use",
+        "Unregistered VASP",
+        "VASP registered in a sanctioned jurisdiction",
+        "VASP in a high-risk jurisdiction",
+        "Counterparty sanctions exposure or adverse media",
+        "Owner designated, or in a sanctioned / high-risk jurisdiction"
+      ],
+      "doctrine_file": "fc-05-sanctions-exposure-analytics-toolkit/typologies/CMI010_Cryptocurrency_Evasion.md"
+    },
+    {
+      "typology_id": "FND001",
+      "family": "network",
+      "label": "Entity Resolution",
+      "summary": "FND001 Entity Resolution is the foundation capability that resolves duplicate representations of one real-world entity into a single canonical identity, so that risk attaching to any representation attaches to all of them.",
+      "indicators": [
+        "Unresolved duplicate understating exposure across every downstream product",
+        "Name gate cleared but the match carried thereafter by address alone",
+        "Name gate cleared but the match carried thereafter by telephone alone",
+        "Names align while registration numbers differ",
+        "Address shared by many otherwise dissimilar names",
+        "Merge uniting entities incorporated in different registries",
+        "Match score near a confidence band boundary"
+      ],
+      "intelligence_question": "Which of these records describe the same party, and how confident are we?",
+      "doctrine_file": "fc-03-network-intelligence-library/intelligence-products/specific/FND001/README.md"
+    },
+    {
+      "typology_id": "FND002",
+      "family": "network",
+      "label": "Relationship Discovery",
+      "summary": "FND002 Relationship Discovery is the foundation capability that derives typed, confidence-scored edges between resolved entities from six independent evidence sources, and reduces them to one non-duplicated set.",
+      "indicators": [
+        "Shared attribute edge read as evidence of control",
+        "Dense shared attribute cluster, the signature of a formation agent",
+        "Control edge sitting at exactly its default confidence",
+        "Ownership edge sitting at exactly its default confidence",
+        "Control asserted with no transactional edge between the parties",
+        "Transaction edge recorded from one side only",
+        "Edge whose only evidence source is an address match"
+      ],
+      "intelligence_question": "What connects these two entities, on what evidence, and how firmly?",
+      "doctrine_file": "fc-03-network-intelligence-library/intelligence-products/specific/FND002/README.md"
+    },
+    {
+      "typology_id": "FND003",
+      "family": "network",
+      "label": "Beneficial Ownership Intelligence",
+      "summary": "FND003 Beneficial Ownership Intelligence is the foundation capability that traverses ownership and control edges backwards from a subject entity to the parties standing at the top of its chains, computing each one's effective stake and the confidence of the path that establishes it.",
+      "indicators": [
+        "Deep chain whose multiplied stake falls below the twenty-five percent threshold",
+        "Chain reaching exactly six hops, where traversal stopped rather than finished",
+        "High path confidence averaged over one weak edge",
+        "Circular ownership, leaving the structure with no terminal",
+        "Ownership edge carrying no stated percentage",
+        "Effective ownership computed over a chain with missing percentages",
+        "Single owner sharing many target entities"
+      ],
+      "intelligence_question": "Who ultimately owns or controls this entity, through what chain, and how much of that chain is actually evidenced?",
+      "doctrine_file": "fc-03-network-intelligence-library/intelligence-products/specific/FND003/README.md"
+    },
+    {
+      "typology_id": "FND004",
+      "family": "network",
+      "label": "Network Risk Assessment",
+      "summary": "FND004 Network Risk Assessment is the foundation capability that combines five weighted risk components into a single network risk score, a band, a set of named drivers, and a confidence figure derived from the evidence underneath.",
+      "indicators": [
+        "Component reading exactly zero, which may mean unsupplied rather than absent",
+        "Sanctions exposure edge diluted by volume into the relationship mean",
+        "Ownership edge typed OWNS, PARTIAL_OWNER_OF, SHAREHOLDER_OF or ULTIMATE_OWNER_OF",
+        "Confidence reported as one over evidence that carried no confidence at all",
+        "High structural score on a large but otherwise ordinary network",
+        "Ownership depth at three or above, where the component is already capped",
+        "Score sitting just below a band boundary"
+      ],
+      "intelligence_question": "How risky is this entity network, and which part of it carries the risk?",
+      "doctrine_file": "fc-03-network-intelligence-library/intelligence-products/specific/FND004/README.md"
+    },
+    {
+      "typology_id": "FND005",
+      "family": "network",
+      "label": "Investigation Workflow Intelligence",
+      "summary": "FND005 Investigation Workflow Intelligence is the foundation capability that converts scored intelligence products into a ranked work queue, combining risk, confidence, exposure, materiality and complexity into a priority score, a band, named drivers and a queue assignment.",
+      "indicators": [
+        "Priority read as risk, where the bands share names with FND004 and mean otherwise",
+        "Exposure silently defaulted to the risk score, putting most of the weight on one number",
+        "Materiality defaulted to fifty, where the product is unmeasured rather than neutral",
+        "Confidence reported between zero and one on a zero to a hundred scale",
+        "Well evidenced moderate finding outranking a weakly evidenced severe one",
+        "High complexity raising priority, counting the cost of work as a reason to do it sooner",
+        "Critical priority carrying no risk driver in its list"
+      ],
+      "intelligence_question": "Of everything the platform has produced, what should an investigator open first, and why that?",
+      "doctrine_file": "fc-03-network-intelligence-library/intelligence-products/specific/FND005/README.md"
+    },
+    {
+      "typology_id": "PAT001",
+      "family": "network",
+      "label": "Shared Director",
+      "summary": "NI001 Shared Director identifies entities connected through a common director, officer, appointed representative or controlling individual.",
+      "indicators": [
+        "Shared director between customer and counterparty",
+        "Shared director linked to high-risk jurisdiction",
+        "Shared director linked to multiple shell companies",
+        "Shared director connected to sanctioned entity",
+        "Undisclosed related-party relationship",
+        "Director appears across high-risk network cluster"
+      ],
+      "intelligence_question": "Do two or more entities share the same director or controlling officer?",
+      "doctrine_file": "fc-03-network-intelligence-library/intelligence-products/specific/NI001/README.md",
+      "doctrine_authored_as": "NI001"
+    },
+    {
+      "typology_id": "PAT002",
+      "family": "network",
+      "label": "Shared Beneficial Owner",
+      "summary": "NI002 Shared Beneficial Owner identifies entities connected through a common beneficial owner, ultimate beneficial owner (UBO), controlling shareholder or ultimate controller.",
+      "indicators": [
+        "Shared UBO between trading entities",
+        "Undisclosed related-party relationship",
+        "Ownership through offshore structure",
+        "Ownership connected to sanctioned entity",
+        "Ownership linked to adverse media",
+        "Complex ownership layering"
+      ],
+      "intelligence_question": "Do two or more entities share the same beneficial owner?",
+      "doctrine_file": "fc-03-network-intelligence-library/intelligence-products/specific/NI002/README.md",
+      "doctrine_authored_as": "NI002"
+    },
+    {
+      "typology_id": "PAT003",
+      "family": "network",
+      "label": "Layered Ownership",
+      "summary": "NI003 Layered Ownership identifies ownership structures where one or more intermediate entities exist between the ultimate beneficial owner and the subject entity.",
+      "indicators": [
+        "Three-layer ownership structure",
+        "Cross-border ownership path",
+        "Offshore holding company",
+        "Reduced ownership transparency",
+        "Potential ownership concealment"
+      ],
+      "intelligence_question": "Does ownership pass through multiple intermediate entities before reaching the ultimate beneficial owner?",
+      "doctrine_file": "fc-03-network-intelligence-library/intelligence-products/specific/NI003/README.md",
+      "doctrine_authored_as": "NI003"
+    },
+    {
+      "typology_id": "PAT004",
+      "family": "network",
+      "label": "Circular Ownership",
+      "summary": "NI004 Circular Ownership identifies ownership structures where ownership relationships ultimately loop back to an originating entity.",
+      "indicators": [
+        "Circular ownership structure detected",
+        "Beneficial ownership obscured",
+        "Ownership transparency reduced",
+        "Cross-jurisdiction ownership cycle",
+        "Related-party control indicators"
+      ],
+      "intelligence_question": "Does ownership eventually loop back to the originating entity?",
+      "doctrine_file": "fc-03-network-intelligence-library/intelligence-products/specific/NI004/README.md",
+      "doctrine_authored_as": "NI004"
+    },
+    {
+      "typology_id": "PAT005",
+      "family": "network",
+      "label": "Common Address",
+      "summary": "NI005 Common Address identifies entities connected through a shared address.",
+      "indicators": [
+        "Twenty entities registered at same address",
+        "Address linked to shell companies",
+        "Address linked to sanctioned entity",
+        "Address appears across multiple ownership networks",
+        "High-risk address cluster detected"
+      ],
+      "intelligence_question": "Do two or more entities share the same address?",
+      "doctrine_file": "fc-03-network-intelligence-library/intelligence-products/specific/NI005/README.md",
+      "doctrine_authored_as": "NI005"
+    },
+    {
+      "typology_id": "PAT006",
+      "family": "network",
+      "label": "Common Contact",
+      "summary": "NI006 Common Contact identifies entities connected through shared contact information.",
+      "indicators": [
+        "Shared email across multiple entities",
+        "Shared phone number across counterparties",
+        "Contact linked to sanctioned entity",
+        "Operational connectivity indicators",
+        "High-risk contact cluster detected"
+      ],
+      "intelligence_question": "Do two or more entities share the same contact details?",
+      "doctrine_file": "fc-03-network-intelligence-library/intelligence-products/specific/NI006/README.md",
+      "doctrine_authored_as": "NI006"
+    },
+    {
+      "typology_id": "PAT007",
+      "family": "network",
+      "label": "Shell Company Network",
+      "summary": "NI007 Shell Company Network identifies networks of entities exhibiting characteristics commonly associated with shell companies.",
+      "indicators": [
+        "Shared Directors",
+        "Shared Beneficial Owners",
+        "Shared Addresses",
+        "Shared Contacts",
+        "Layered Ownership",
+        "Circular Ownership",
+        "Offshore Registration",
+        "Limited Operational Presence",
+        "Low Transparency",
+        "Layered ownership structure",
+        "Shared directors",
+        "Shared address cluster",
+        "Offshore holding companies",
+        "Hidden ownership indicators"
+      ],
+      "intelligence_question": "Does the network contain characteristics consistent with a shell company structure?",
+      "doctrine_file": "fc-03-network-intelligence-library/intelligence-products/specific/NI007/README.md",
+      "doctrine_authored_as": "NI007"
+    },
+    {
+      "typology_id": "PAT008",
+      "family": "network",
+      "label": "Shadow Fleet",
+      "summary": "NI008 Shadow Fleet identifies networks of vessels, operators, owners, managers and associated entities exhibiting characteristics commonly associated with shadow fleet activity.",
+      "indicators": [
+        "Frequent Flag Changes",
+        "Frequent Ownership Changes",
+        "AIS Gaps",
+        "Ship-to-Ship Transfers",
+        "Offshore Ownership",
+        "Layered Ownership",
+        "Sanctioned Connections",
+        "High-Risk Trade Routes",
+        "Opaque Ownership",
+        "Layered vessel ownership",
+        "Frequent flag changes",
+        "AIS anomalies",
+        "Indirect sanctions exposure",
+        "Ownership opacity"
+      ],
+      "intelligence_question": "Does the vessel network exhibit characteristics consistent with shadow fleet activity?",
+      "doctrine_file": "fc-03-network-intelligence-library/intelligence-products/specific/NI008/README.md",
+      "doctrine_authored_as": "NI008"
+    },
+    {
+      "typology_id": "PAT009",
+      "family": "network",
+      "label": "Related Party Trading",
+      "summary": "NI009 Related Party Trading identifies trading activity occurring between entities that are connected through ownership, control, directors, addresses, contacts or other network relationships.",
+      "indicators": [
+        "Shared beneficial ownership",
+        "Undisclosed trade relationship",
+        "Circular trade flow",
+        "Cross-border ownership structure",
+        "Indirect sanctions exposure"
+      ],
+      "intelligence_question": "Are trading counterparties connected through ownership, control or network relationships?",
+      "doctrine_file": "fc-03-network-intelligence-library/intelligence-products/specific/NI009/README.md",
+      "doctrine_authored_as": "NI009"
+    },
+    {
+      "typology_id": "PAT010",
+      "family": "network",
+      "label": "Hidden Controller",
+      "summary": "NI010 Hidden Controller identifies individuals or entities exercising effective control over an organisation despite not appearing as the declared owner, director or controller.",
+      "indicators": [
+        "Common Decision Maker",
+        "Repeated Transaction Authority",
+        "Shared Signatories",
+        "Common Contacts",
+        "Repeated Ownership Influence",
+        "Cross-Network Control Patterns",
+        "Control Without Ownership",
+        "Control without ownership",
+        "Nominee director structure",
+        "Concealed ownership arrangement",
+        "Indirect sanctions exposure",
+        "Network-wide control concentration"
+      ],
+      "intelligence_question": "Who is actually controlling the entity or network?",
+      "doctrine_file": "fc-03-network-intelligence-library/intelligence-products/specific/NI010/README.md",
+      "doctrine_authored_as": "NI010"
+    },
+    {
+      "typology_id": "SAN001",
+      "family": "sanctions",
+      "label": "Ownership Evasion",
+      "summary": "Beneficial Ownership Evasion is the use of layered holding structures, nominee arrangements and secrecy jurisdictions to conceal that a designated party ultimately owns or controls an entity. The entity itself is not on any sanctions list and passes conventional name screening; the exposure sits in the ownership chain behind it.",
+      "indicators": [
+        "A control path reaching a designated party at ≥ 50% (determinative)",
+        "Sub-50% but material effective ownership by a designated party",
+        "Nominee shareholders / directors in the chain",
+        "Ownership transferred shortly before or after designation",
+        "Multiple layers of intermediate holding companies",
+        "Circular or self-referential holdings",
+        "Secrecy-jurisdiction incorporations",
+        "British Virgin Islands, Cayman, Panama, Seychelles and similar",
+        "Mismatch between operating and registration jurisdictions",
+        "Counterparties themselves carrying sanctions exposure or adverse media"
+      ],
+      "doctrine_file": "fc-05-sanctions-exposure-analytics-toolkit/typologies/SAN001_Ownership_Evasion.md"
+    },
+    {
+      "typology_id": "SAN002",
+      "family": "sanctions",
+      "label": "Shadow Fleet",
+      "summary": "Shadow Fleet Operations involve the use of vessels, ownership structures, intermediaries and maritime logistics networks designed to facilitate sanctions evasion, conceal beneficial ownership and transport restricted commodities outside regulatory oversight.",
+      "indicators": [
+        "Common beneficial owners",
+        "Shared directors",
+        "Shared registered addresses",
+        "Offshore holding structures",
+        "Nominee ownership arrangements",
+        "Frequent vessel renaming",
+        "Repeated flag changes",
+        "AIS transmission gaps",
+        "Unusual routing patterns",
+        "Ship-to-ship transfers",
+        "High-risk ports",
+        "Sanctioned jurisdictions",
+        "Weak regulatory oversight locations",
+        "Free trade zones",
+        "Restricted commodity movements",
+        "Russian crude oil",
+        "Iranian petroleum products",
+        "Dual-use goods",
+        "Military-related materials"
+      ],
+      "doctrine_file": "fc-05-sanctions-exposure-analytics-toolkit/typologies/SAN002_Shadow_Fleet.md"
+    },
+    {
+      "typology_id": "SAN003",
+      "family": "sanctions",
+      "label": "Transshipment",
+      "summary": "Transshipment Evasion is the routing of goods through an intermediary jurisdiction to disguise their true origin or destination and defeat origin-based sanctions controls. Cargo that could not move directly between two points is re-papered at a hub — a free zone, an entrepôt — so the declared trade route no longer reveals the sanctioned leg.",
+      "indicators": [
+        "Declared origin ≠ true origin",
+        "One or more transshipment hops through a known hub",
+        "Restricted / controlled commodity",
+        "Generic goods descriptions on high-value cargo",
+        "AIS transmission gaps on the true leg",
+        "Ship-to-ship transfers near the hub",
+        "True origin in a sanctioned jurisdiction",
+        "Hub in a high-risk free zone",
+        "Counterparties carrying sanctions exposure or adverse media"
+      ],
+      "doctrine_file": "fc-05-sanctions-exposure-analytics-toolkit/typologies/SAN003_Transshipment.md"
+    },
+    {
+      "typology_id": "SAN004",
+      "family": "sanctions",
+      "label": "Front Companies",
+      "summary": "A front company is an entity with little or no genuine economic substance, established to give a sanctioned interest a clean commercial face. It exists to transact — to hold accounts, sign contracts and move goods — while the real party stays hidden behind it.",
+      "indicators": [
+        "No employees",
+        "No physical premises",
+        "No web presence",
+        "Generic business description",
+        "Recently incorporated",
+        "Dormant",
+        "Ownership linked to a designated party",
+        "Opaque ownership",
+        "Offshore owner",
+        "Secrecy / low-transparency incorporation (e.g. Marshall Islands)",
+        "Counterparties carrying sanctions exposure or adverse media"
+      ],
+      "doctrine_file": "fc-05-sanctions-exposure-analytics-toolkit/typologies/SAN004_Front_Companies.md"
+    },
+    {
+      "typology_id": "SAN005",
+      "family": "sanctions",
+      "label": "Name Screening Evasion",
+      "summary": "Name Screening Evasion is the defeat of list-based screening through the *form of the name*: aliases, transliterations, suffix variants, deliberate misspellings and word re-orderings that let a listed party transact under a name an exact-match filter never flags. The party is on the list; the name on the paperwork is engineered not to match it.",
+      "indicators": [
+        "A STRONG / FUZZY (non-exact) match above the 0.85 threshold — a variant that still resolves to a listed party",
+        "A match landing on an alias rather than the primary listed name",
+        "Multiple near-duplicate entities matching the same listed party",
+        "Sanctions-list hit (severity 90)",
+        "PEP hit (severity 70)",
+        "Adverse-media hit (severity 55)"
+      ],
+      "doctrine_file": "fc-05-sanctions-exposure-analytics-toolkit/typologies/SAN005_Name_Screening_Evasion.md"
+    },
+    {
+      "typology_id": "SAN006",
+      "family": "sanctions",
+      "label": "Trade Based Sanctions Evasion",
+      "summary": "Trade-Based Sanctions Evasion moves value or prohibited goods across a sanctioned boundary by manipulating the trade transaction itself — mispricing an invoice, or misdescribing the goods so that a controlled item travels under an innocuous label. The transaction is the instrument of evasion.",
+      "indicators": [
+        "Large price deviation from benchmark (over/under-pricing)",
+        "Goods misdescription (declared ≠ actual)",
+        "High-value cargo under generic descriptions",
+        "Sanctioned destination",
+        "Counterparty sanctions exposure or adverse media",
+        "Trading party owned by / linked to a designated party"
+      ],
+      "doctrine_file": "fc-05-sanctions-exposure-analytics-toolkit/typologies/SAN006_Trade_Based_Sanctions_Evasion.md"
+    },
+    {
+      "typology_id": "SAN007",
+      "family": "sanctions",
+      "label": "Dual Use Goods",
+      "summary": "Dual-use goods are items with a legitimate civilian use that can also serve a military or proliferation purpose — electronics, precision instruments, controlled technology. Sanctions and export controls turn on the commodity's classification, its end-use and its destination, not merely on the parties named.",
+      "indicators": [
+        "Dual-use / export-controlled classification",
+        "Military end-use",
+        "Controlled technology transfer",
+        "Sanctioned / embargoed destination",
+        "High-risk destination",
+        "End-user sanctions exposure or adverse media",
+        "End-user owned by a designated party",
+        "Opaque end-user ownership"
+      ],
+      "doctrine_file": "fc-05-sanctions-exposure-analytics-toolkit/typologies/SAN007_Dual_Use_Goods.md"
+    },
+    {
+      "typology_id": "SAN008",
+      "family": "sanctions",
+      "label": "High Risk Jurisdictions",
+      "summary": "High-Risk-Jurisdiction exposure measures how much of an entity's footprint — where it is registered and operates, the corridors it trades, who owns it, who it deals with — touches sanctioned, embargoed or high-risk jurisdictions. Here the jurisdiction is not an aggravating detail behind another finding; it *is* the finding.",
+      "indicators": [
+        "Two or more sanctioned jurisdictions in the footprint",
+        "One sanctioned jurisdiction alongside a high-risk jurisdiction",
+        "Three or more high-risk jurisdictions",
+        "Trade with a sanctioned jurisdiction",
+        "High-risk trade corridor",
+        "Owner designated, or registered in a sanctioned / high-risk jurisdiction",
+        "Counterparty sanctions exposure or adverse media"
+      ],
+      "doctrine_file": "fc-05-sanctions-exposure-analytics-toolkit/typologies/SAN008_High_Risk_Jurisdictions.md"
+    },
+    {
+      "typology_id": "SAN009",
+      "family": "sanctions",
+      "label": "Complex Ownership Structures",
+      "summary": "Complex Ownership Structures use structural opacity itself as the evasion mechanism: deep layering, circular holdings, nominee tiers and clusters of secrecy-jurisdiction incorporations engineered so that no reader can trace ultimate control. The structure need not resolve to a *named* designated party to be a finding — the opacity is the risk.",
+      "indicators": [
+        "Layering depth ≥ 4–5",
+        "Circular ownership loop",
+        "Two or more nominee tiers",
+        "Shared directors across nodes",
+        "Shared registered addresses",
+        "Multiple shell indicators",
+        "Multiple secrecy jurisdictions (BVI, Cayman, Panama, Seychelles)",
+        "Counterparties carrying sanctions exposure or adverse media"
+      ],
+      "doctrine_file": "fc-05-sanctions-exposure-analytics-toolkit/typologies/SAN009_Complex_Ownership_Structures.md"
+    },
     {
       "typology_id": "TBML001",
       "family": "tbml",
-      "label": "Over and under invoicing of goods",
-      "summary": "Misrepresenting the price of goods on trade documents to move value across borders.",
-      "indicators": ["Unit price materially outside market range", "Same goods repeatedly re-invoiced between related parties"]
+      "label": "Over Invoicing",
+      "summary": "Over-invoicing is a common Trade-Based Money Laundering technique whereby the price of goods is intentionally inflated beyond their true market value.",
+      "indicators": [],
+      "intelligence_question": "Are import or export transactions being deliberately over-invoiced to facilitate the movement of illicit value across borders?",
+      "doctrine_file": "fc-04-tbml-analytics-toolkit/intelligence-products/specific/TBML001/README.md"
     },
     {
       "typology_id": "TBML002",
       "family": "tbml",
-      "label": "Phantom shipments",
-      "summary": "Payment for goods that were never shipped, supported by fabricated shipping documents.",
-      "indicators": ["Bill of lading not reconcilable to vessel movement", "Consignee address is a mailbox"]
+      "label": "Over Invoicing (Cross-Domain)",
+      "summary": "Over-invoicing is a common Trade-Based Money Laundering technique whereby the price of goods is intentionally inflated beyond their true market value.",
+      "indicators": [],
+      "intelligence_question": "Are import or export transactions being deliberately over-invoiced to facilitate the movement of illicit value across borders?",
+      "doctrine_file": "fc-04-tbml-analytics-toolkit/intelligence-products/specific/TBML001/README.md",
+      "doctrine_authored_as": "TBML001"
     },
     {
-      "typology_id": "SANC001",
-      "family": "sanctions",
-      "label": "Sanctions evasion via front companies",
-      "summary": "Designated persons transact through newly formed entities with opaque ownership in third countries.",
-      "indicators": ["Entity incorporated within 90 days of a designation", "Shared directors with a designated party"]
+      "typology_id": "TBML002U",
+      "family": "tbml",
+      "label": "Under Invoicing",
+      "summary": "Under Invoicing occurs when the value of goods or services on an invoice is intentionally understated below their true market value. It is the mirror of over-invoicing: where over-invoicing moves value to the *exporter* through overpayment, under-invoicing moves value to the *importer* — the buyer receives goods worth far more than the price paid, and the difference is settled or realised outside the visible trade.",
+      "indicators": [
+        "Invoice Deflation",
+        "High Value Trade",
+        "High Risk Corridor",
+        "Related Party Trading",
+        "Shell Company Structure",
+        "Repeat Activity"
+      ],
+      "intelligence_question": "Is a trade transaction being used to transfer value through invoice deflation below expected market value — understating the price to move value to the importer, evade duty, or settle an obligation outside the visible trade?",
+      "doctrine_file": "fc-04-tbml-analytics-toolkit/typologies/TBML002/TBML002_Under_Invoicing.md",
+      "doctrine_authored_as": "TBML002"
     },
     {
-      "typology_id": "SANC002",
-      "family": "sanctions",
-      "label": "Shadow fleet maritime evasion",
-      "summary": "Vessels disable AIS, change flags and conduct ship-to-ship transfers to move sanctioned cargo.",
-      "indicators": ["AIS dark periods near known transfer zones", "Frequent flag changes"]
+      "typology_id": "TBML003",
+      "family": "tbml",
+      "label": "Multiple Invoicing",
+      "summary": "Multiple Invoicing raises more than one invoice against a single underlying shipment of goods, so that one legitimate movement of goods justifies several payments. Each invoice looks ordinary in isolation; the abuse is only visible when they are reconciled against the one shipment they all reference.",
+      "indicators": [
+        "Duplicate Invoicing",
+        "Repeated Settlement",
+        "High Value Trade",
+        "High Risk Corridor",
+        "Related Party Trading",
+        "Shell Company Structure"
+      ],
+      "intelligence_question": "Is a single shipment being invoiced multiple times to justify several payments for one movement of goods, transferring value under the appearance of legitimate trade?",
+      "doctrine_file": "fc-04-tbml-analytics-toolkit/typologies/TBML003/TBML003_Multiple_Invoicing.md"
     },
     {
-      "typology_id": "CORR001",
-      "family": "correspondent_banking",
-      "label": "Nested correspondent relationships",
-      "summary": "A respondent bank offers its correspondent access to third banks without the correspondent's knowledge.",
-      "indicators": ["Payment volumes inconsistent with respondent's stated customer base", "Repeated originator fields naming other financial institutions"]
+      "typology_id": "TBML004",
+      "family": "tbml",
+      "label": "Phantom Shipping",
+      "summary": "Phantom Shipping settles or invoices a trade for goods that were never actually shipped. There is a payment, an invoice and often a contract, but no genuine movement of goods — the shipping record is missing, forged, or inconsistent with the trade. The trade exists only on paper to justify a cross-border payment.",
+      "indicators": [
+        "Missing Shipment",
+        "No Bill of Lading",
+        "Document Discrepancy",
+        "Payment Without Delivery",
+        "Related Party Trading",
+        "Shell Company Structure"
+      ],
+      "intelligence_question": "Is a trade being settled or invoiced for goods that were never actually shipped — a payment with no genuine movement of goods behind it?",
+      "doctrine_file": "fc-04-tbml-analytics-toolkit/typologies/TBML004/TBML004_Phantom_Shipping.md"
     },
     {
-      "typology_id": "CAPM001",
-      "family": "capital_markets",
-      "label": "Mirror trading",
-      "summary": "Matched buy and sell orders in different currencies used to move value offshore.",
-      "indicators": ["Same security bought and sold same day by linked accounts", "No economic rationale for the trade pair"]
+      "typology_id": "TBML005",
+      "family": "tbml",
+      "label": "False Description Of Goods",
+      "summary": "False Description of Goods declares a consignment as something other than what actually ships — a different commodity, HS code, quality or control status. The misdescription lets the trader misstate value, conceal a controlled or high-value item, evade duty, or move value under cover of an innocuous commodity.",
+      "indicators": [
+        "Commodity Mismatch",
+        "HS Chapter Mismatch",
+        "Controlled-Goods Concealment",
+        "High Value Trade",
+        "Related Party Trading",
+        "Shell Company Structure"
+      ],
+      "intelligence_question": "Do the goods as declared match the goods that actually ship — or is a false description being used to conceal the true commodity, its value, or its control status?",
+      "doctrine_file": "fc-04-tbml-analytics-toolkit/typologies/TBML005/TBML005_False_Description_Of_Goods.md"
     },
     {
-      "typology_id": "NETW001",
-      "family": "network",
-      "label": "Money mule herding",
-      "summary": "Coordinated recruitment of individuals whose accounts receive and forward illicit funds.",
-      "indicators": ["Rapid pass-through within 24 hours", "Many unrelated accounts sharing device or address"]
+      "typology_id": "TBML006",
+      "family": "tbml",
+      "label": "Circular Trade",
+      "summary": "Circular Trade (round-tripping) cycles goods or funds through a chain of related parties so that value leaves an entity and returns to it with no genuine change of ownership or economic purpose. Each individual trade looks legitimate; only when the chain is assembled does the loop appear — the same goods, or the value they represent, come back to where they started.",
+      "indicators": [
+        "Closed Trade Loop",
+        "Common Control",
+        "Round-Tripped Value",
+        "High Value Trade",
+        "Shell Company Structure",
+        "High Risk Corridor"
+      ],
+      "intelligence_question": "Do goods or funds cycle back to their origin through a chain of related trades — a closed loop with no genuine change of ownership?",
+      "doctrine_file": "fc-04-tbml-analytics-toolkit/typologies/TBML006/TBML006_Circular_Trade.md"
     },
     {
-      "typology_id": "CRYP001",
-      "family": "crypto",
-      "label": "Chain hopping through unhosted wallets",
-      "summary": "Converting between assets and chains to break the audit trail before cashing out at an exchange.",
-      "indicators": ["Cash-out immediately following multi-chain swaps", "Exposure to mixer or bridge addresses"]
+      "typology_id": "TBML007",
+      "family": "tbml",
+      "label": "Dual Use Goods",
+      "summary": "Dual Use Goods are items with a legitimate civilian use that can also serve a military or proliferation purpose — electronics, precision instruments, controlled technology. When such goods move through trade, the risk turns on the commodity's classification, its end-use and its destination, not merely on the parties named. Trade in dual-use goods can be used to divert controlled items to prohibited end-uses under cover of ordinary commerce.",
+      "indicators": [
+        "Dual-Use Commodity",
+        "Military End-Use",
+        "Controlled Technology",
+        "High Value Trade",
+        "Related Party Trading",
+        "Shell Company Structure"
+      ],
+      "intelligence_question": "Is a trade moving a dual-use or export-controlled commodity — and does its end-use, technology content and destination indicate diversion to a prohibited purpose?",
+      "doctrine_file": "fc-04-tbml-analytics-toolkit/typologies/TBML007/TBML007_Dual_Use_Goods.md"
+    },
+    {
+      "typology_id": "TBML008",
+      "family": "tbml",
+      "label": "Third Party Payment Abuse",
+      "summary": "Third Party Payment Abuse settles a trade through a payer who is not the trade counterparty — an unrelated third party, split settlement, or a payment that does not match the trade. The payment breaks the link between the trade and the funds, letting value enter or leave under cover of a legitimate-looking transaction while the true source or destination of the money is obscured.",
+      "indicators": [
+        "Third-Party Payer",
+        "Split Settlement",
+        "Payment Mismatch",
+        "High Value Trade",
+        "Related Party Trading",
+        "Shell Company Structure"
+      ],
+      "intelligence_question": "Is a trade being settled by a payer who is not the trade counterparty — an unrelated third party, split, or mismatched payment that breaks the link between the trade and the funds?",
+      "doctrine_file": "fc-04-tbml-analytics-toolkit/typologies/TBML008/TBML008_Third_Party_Payment_Abuse.md"
+    },
+    {
+      "typology_id": "TBML009",
+      "family": "tbml",
+      "label": "Shell Company Trading",
+      "summary": "Shell Company Trading routes trade through a counterparty with no genuine commercial substance — no employees, premises, trading history or economic footprint — used to give illicit trade a legitimate commercial face. The shell exists to transact: to hold accounts, sign contracts and settle payments while the real party stays hidden behind it.",
+      "indicators": [
+        "Shell Counterparty",
+        "No Commercial Footprint",
+        "Related Party Trading",
+        "High Value Trade",
+        "High Risk Corridor",
+        "Recently Incorporated"
+      ],
+      "intelligence_question": "Is a trade being routed through a counterparty with no genuine commercial substance — a shell used to give illicit trade a legitimate face?",
+      "doctrine_file": "fc-04-tbml-analytics-toolkit/typologies/TBML009/TBML009_Shell_Company_Trading.md"
+    },
+    {
+      "typology_id": "TBML010",
+      "family": "tbml",
+      "label": "Sanctions Evasion Through Trade",
+      "summary": "Sanctions Evasion Through Trade uses ordinary-looking trade to move value or goods to or from a sanctioned party or jurisdiction. The trade documents describe a legitimate transaction, but a party to it — or the jurisdiction it touches — is subject to sanctions. Trade becomes the vehicle for maintaining a commercial relationship that direct payment or name screening would block. This is the most severe of the TBML typologies.",
+      "indicators": [
+        "Sanctioned Party",
+        "Sanctioned Jurisdiction",
+        "High Risk Jurisdiction",
+        "High Risk Corridor",
+        "Shell Company Structure",
+        "Related Party Trading"
+      ],
+      "intelligence_question": "Is a trade being used to move value or goods to or from a sanctioned party or jurisdiction — maintaining a commercial relationship that sanctions prohibit?",
+      "doctrine_file": "fc-04-tbml-analytics-toolkit/typologies/TBML010/TBML010_Sanctions_Evasion_Through_Trade.md"
+    },
+    {
+      "typology_id": "TBML011",
+      "family": "tbml",
+      "label": "Freight Cost Inflation",
+      "summary": "Freight Cost Inflation occurs when value is displaced out of the goods line and into the ancillary charges on a trade document — freight and insurance — where nobody benchmarks it.",
+      "indicators": [
+        "Freight Above Benchmark",
+        "Insurance Cost Inflation",
+        "Incoterm Freight Mismatch",
+        "Cap Hugging",
+        "Cap Circumvention Composite",
+        "Unbenchmarked Route"
+      ],
+      "intelligence_question": "Is value being displaced out of a benchmarked or capped goods line into freight and insurance charges that are not benchmarked — so that the trade appears correctly priced while the real transfer happens in the ancillary costs?",
+      "doctrine_file": "fc-04-tbml-analytics-toolkit/typologies/TBML011/TBML011_Freight_Cost_Inflation.md"
     }
   ]
 }

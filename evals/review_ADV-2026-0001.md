@@ -128,6 +128,62 @@ desk. Typologies and actors were stable. A single extraction is not a stable
 measurement, which is what week 3's golden set and `evals/score.py` are for.
 Do not tune the prompt against one run (rule 5).
 
+## Week 2 addendum: the governed library is in, and the search tool is the next defect
+
+Finding 4 closed the same day. `tools/import_fc10_doctrine.py` exports fc-10's
+committed `indexes/doctrine_library.json` (57 typologies, all authored, five
+families) into `data/typologies.json`; deterministic, provenance pinned to the
+fc-10 commit and file hash. Schema 1.2.0 widens `typology_id` to allow one
+trailing letter because the governed library carries `TBML002U` for
+under-invoicing. TBML001 and TBML002 export with no indicators because fc-04's
+doctrine for them has no indicators heading; nothing was invented.
+
+Against the real library, the week-1 record's `TBML002` link is now visibly
+wrong (governed `TBML002` is "Over Invoicing (Cross-Domain)"; phantom shipping
+is `TBML004`), which is what week 2's tool-grounded rerun exists to correct.
+
+**New finding 7: `knowledge_centre_search_typologies` will mislead the agent.**
+It is token overlap with no stemming and no floor. Measured on the real library
+with week-1 phrases:
+
+| Query | Top result | Should be |
+|---|---|---|
+| phantom shipments no product is moved at all | BA001 Structuring, 0.40 | TBML004 Phantom Shipping ("shipments" does not match "shipping") |
+| Black Market Peso Exchange drug cartels | BA007 Cash Intensive Activity, 0.17 | "No matches", it is emergent |
+| misrepresentation of the price of goods invoice over-invoicing | TBML002U Under Invoicing, 0.83 | TBML001, which scored 0.67 |
+| vessels disable AIS ship-to-ship transfer | SAN002 / PAT008 Shadow Fleet, 0.71 | correct |
+
+The plan defers embedding search to week 3, but the agent is grounded on this
+tool in week 2 step 3. A weak match reported as a match is worse than no match:
+the agent will link BMPE to cash-intensive activity and mark it non-emergent.
+Fix in tool design, not prompt: a score floor below which the tool says "no
+match, treat as emergent", and label-token stemming at minimum.
+
+**Finding 7 closed the same day, measured.** `evals/search_probes.py` holds 12
+phrases with expected answers, written before the change: 8 of 12 missed on the
+token-overlap search. The replacement (`rank_typologies` in the server) uses
+stemmed tokens truncated to six characters, inverse document frequency across
+the 57 records so common words stop dominating, a 2× label bonus, and a floor
+of 0.25 below which the tool reports no match and names the closest sub-floor
+candidate as "not a match". After: 12 of 12. Emergent phrases top out at 0.12;
+the weakest true match is 0.48.
+
+Mutation-verified: floor forced to 0 misses both emergent probes; stemming
+disabled misses two; restored, clean. Two of my probes were corrected during
+the work because they were badly posed, not because the scorer failed them:
+one named both a shared director and a shared address, one expected a single
+winner where the library has two Shadow Fleet entries (SAN002, PAT008).
+
+Two limits, recorded rather than fixed:
+
+- TBML001 and TBML002 tie on every over-invoicing query because fc-10's
+  TBML002 borrows TBML001's doctrine verbatim. The tool now appends
+  "doctrine authored as TBML001" from the export's provenance field, so the
+  agent can prefer the code the doctrine was written for. Data, not code.
+- A short query that names only a label ("controlled by the same director")
+  ties PAT001, PAT007 and SAN001 at 1.00. The agent sees all three with
+  labels; that is the honest answer for three stems.
+
 ## Week 1 status
 
 - [x] Extraction run on a real advisory, record validates
