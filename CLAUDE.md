@@ -13,16 +13,18 @@ The pre-existing folders (`analytics-opportunities/`, `intelligence/`, `roadmap/
 - Python 3.14 in `.venv` (activate with `. .venv/bin/activate`)
 - `claude-agent-sdk` 0.2.x, `mcp` 2.2.x (**MCPServer**, not FastMCP; client results are snake_case: `init.server_info`, `init.protocol_version`, annotations `read_only_hint`), `pydantic` 2.13, `pypdf` 6
 - The Agent SDK drives the `claude` CLI, whose login is SEPARATE from the desktop app. Check `claude auth status` first. fatf-gafi.org blocks curl; fetch advisories through a real browser
-- The Agent SDK drives the Claude Code CLI; it must be installed and signed in
 - macOS, Bash 3.2. No `declare -A`, no `mapfile`. Full-file replacements only, never partial snippets or edit-in-place instructions
 
 ## Layout
 
 ```
 PLAN.md                            six-week plan and definition of done
-schemas/advisory.py                AdvisoryRecord contract (schema v1.0.0) — the treaty
+schemas/advisory.py                AdvisoryRecord contract (schema 1.2.0; read SCHEMA_VERSION, not this line) — the treaty
 mcp_server/knowledge_centre_server.py   Knowledge Centre as MCP tools (read-only + propose)
-agents/extract_advisory.py         week-1 single-advisory extraction agent
+agents/extract_advisory.py         single-advisory extraction agent, grounded on the MCP server since week 2
+evals/golden/                      week-3 golden set: advisory_list.json (20, hashed) + hand labels as they are written
+evals/search_probes.py             12 phrases the search tool must resolve; run after any library or scorer change
+tools/fetch_fatf_via_chrome.js     fetches fatf-gafi.org PDFs, which refuse every non-browser client
 data/typologies.json               GOVERNED export of fc-10's doctrine library (57 typologies); never hand-edit
 tools/import_fc10_doctrine.py      regenerates it from fc-10's indexes/doctrine_library.json; deterministic, provenance = fc-10 commit + sha256
 data/advisories/                   source PDFs (gitignored)
@@ -57,9 +59,9 @@ claude mcp add knowledge-centre -- "$PWD/.venv/bin/python" "$PWD/mcp_server/know
 ## Status
 
 - [x] Week 0: repo scaffolded, schema validates, MCP server imports on mcp 2.2.0
-- [x] Week 1 (2026-09-10): FATF TBML 2020 extracted twice; schema argued with and bumped to 1.1.0 (PDF page index + printed_folio, published_on_precision, ActorType.CATEGORY). Review and numbers in `evals/review_ADV-2026-0001.md`; citation checker in `evals/check_citations.py`. Nothing committed yet.
-- [~] Week 2 (started 2026-09-10): MCP server registered (`claude mcp get knowledge-centre` shows Connected) and driven over stdio by a client; fixture replaced by the governed fc-10 export (schema 1.2.0 widens typology_id to allow TBML002U). Agent wired via `mcp_servers` with `strict_mcp_config=True` (the folder's `claude mcp add` registration otherwise loads too and causes permission denials); library removed from the prompt; `_refuse_unknown_ids` guards in code. Tool-grounded run: 7 library ids + 5 emergent, 12 proposals, $1.14, 49 turns. Citation page/folio SWAPPED in 15 of 21 under tool load: prompt advice does not hold; structural fix deferred to the golden set. Week 2 DONE except commit. Search tool rewritten (stemmed IDF + label bonus + floor 0.25); `evals/search_probes.py` went 8-of-12 missing to 12-of-12, mutation-verified. Run it after ANY change to the library or the scorer.
-- [ ] Week 3: 20-advisory golden set and `evals/score.py`
+- [x] Week 1 (2026-09-10): FATF TBML 2020 extracted twice; schema argued with and bumped to 1.1.0 (PDF page index + printed_folio, published_on_precision, ActorType.CATEGORY). Review and numbers in `evals/review_ADV-2026-0001.md`; citation checker in `evals/check_citations.py`. Committed as 6841abd.
+- [~] Week 2 (started 2026-09-10): MCP server registered (`claude mcp get knowledge-centre` shows Connected) and driven over stdio by a client; fixture replaced by the governed fc-10 export (schema 1.2.0 widens typology_id to allow TBML002U). Agent wired via `mcp_servers` with `strict_mcp_config=True` (the folder's `claude mcp add` registration otherwise loads too and causes permission denials); library removed from the prompt; `_refuse_unknown_ids` guards in code. Tool-grounded run: 7 library ids + 5 emergent, 12 proposals, $1.14, 49 turns. Citation page/folio SWAPPED in 15 of 21 under tool load: prompt advice does not hold; structural fix deferred to the golden set. Week 2 DONE, committed as 98a7d6e + 971aa34. Search tool rewritten (stemmed IDF + label bonus + floor 0.25); `evals/search_probes.py` went 8-of-12 missing to 12-of-12, mutation-verified. Run it after ANY change to the library or the scorer.
+- [~] Week 3 (started 2026-09-10): twenty advisories selected from Source Matrix tiers 1-2, every URL verified, all downloaded to `data/advisories/` (gitignored, 920 pages, all born-digital), listed with hashes in `evals/golden/advisory_list.json`. NOT YET: hand labels, `evals/score.py`, resolve_actor tool. fatf-gafi.org needs a real browser: `tools/fetch_fatf_via_chrome.js` (cached playwright module + installed Chrome, stealth headless) works; the Playwright MCP servers drop on downloads.
 - [ ] Week 4: fetcher / extractor / classifier / reviewer subagents
 - [ ] Week 5: hooks, telemetry, `review.py` gate, desk digests
 - [ ] Week 6: publish slice 1 on `future-capabilities.html`, tag `fc08-threatintel-slice1-v1.0.0`
